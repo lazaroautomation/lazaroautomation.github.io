@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lázaro M. Fuentes | Consola de Ingeniería de Automatización</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --border: #30363d;
+            --accent: #58a6ff;
+            --success: #238636;
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            background-image: radial-gradient(var(--border) 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .console {
+            width: 95%;
+            max-width: 1100px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+
+        .sidebar {
+            padding: 40px 30px;
+            background: rgba(0, 0, 0, 0.2);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Selector de Idioma */
+        .lang-switcher { display: flex; gap: 8px; margin-bottom: 25px; }
+        .lang-btn {
+            text-decoration: none;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            transition: 0.2s;
+        }
+        .lang-btn.active {
+            background: rgba(88, 166, 255, 0.1);
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+            object-fit: cover;
+            filter: grayscale(20%);
+        }
+
+        .name-tag h1 { font-size: 1.4rem; margin: 0; font-weight: 600; color: #fff; }
+        .name-tag p { font-size: 0.85rem; color: var(--accent); margin: 5px 0 20px 0; font-family: monospace; }
+
+        .contact-info { font-size: 0.8rem; color: var(--text-muted); line-height: 1.8; }
+        .contact-info b { color: var(--text-main); }
+
+        .main-display { padding: 40px; position: relative; }
+
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .status-badge {
+            background: rgba(35, 134, 54, 0.15);
+            color: #3fb950;
+            border: 1px solid rgba(63, 185, 80, 0.3);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .section-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 1.5px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .summary { font-size: 1rem; line-height: 1.6; color: var(--text-main); margin-bottom: 35px; }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .metric-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .metric-card:hover { border-color: var(--accent); background: rgba(88, 166, 255, 0.05); transform: translateY(-2px); }
+
+        .m-val { font-size: 1.2rem; font-weight: 700; color: #fff; display: block; }
+        .m-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
+
+        .btn-container { margin-top: 40px; width: 100%; }
+        .btn {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.2s;
+            border: 1px solid var(--border);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+        .btn-secondary { background: #21262d; color: var(--text-main); }
+
+        @media (max-width: 850px) {
+            .console { grid-template-columns: 1fr; }
+            .sidebar { border-right: none; border-bottom: 1px solid var(--border); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="console">
+        <aside class="sidebar">
+            <div class="lang-switcher">
+                <a href="index.html" class="lang-btn">EN</a>
+                <a href="index_es.html" class="lang-btn active">ES</a>
+            </div>
+
+            <img src="profile.png" alt="Lázaro M. Fuentes" class="profile-img">
+            <div class="name-tag">
+                <h1>Lázaro M. Fuentes</h1>
+                <p>Ingeniero de Automatización</p>
+            </div>
+            
+            <div class="contact-info">
+                <div><b>Ubicación:</b> Ciudad de México</div>
+                <div><b>Educación:</b> Ingeniería Automática, CUJAE</div>
+                <div><b>Especialidad:</b> PLC / SCADA / C#</div>
+                <div style="margin-top: 15px;"><b>Sistemas Core:</b></div>
+                <div style="font-size: 0.75rem;">BHS, ALCMS, HVAC, BMS</div>
+            </div>
+
+            <div class="btn-container">
+                <a href="https://www.linkedin.com/in/lazaroautomation" class="btn btn-primary">Perfil de LinkedIn</a>
+                <a href="mailto:lazaroautomation@gmail.com" class="btn btn-secondary">Contactar Ingeniero</a>
+            </div>
+        </aside>
+
+        <main class="main-display">
+            <div class="status-header">
+                <div class="section-label" style="margin:0;">Resumen de Ingeniería</div>
+                <div class="status-badge">SISTEMA_ONLINE: FREELANCE_ACTIVO</div>
+            </div>
+
+            <div class="summary">
+                Especializado en el <b>ciclo de vida completo de automatización</b>. Fusiono la integración de hardware 
+                con software industrial C#/.NET para entregar soluciones en <b>infraestructuras críticas</b>, 
+                específicamente modernizando sistemas en aeropuertos internacionales.
+            </div>
+
+            <div class="section-label">Métricas de Rendimiento</div>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <span class="m-val">+30%</span>
+                    <span class="m-desc">Reducción de Tiempo de Inactividad</span>
+                </div>
+                <div class="metric-card">
+                    <span class="m-val">+20%</span>
+                    <span class="m-desc">Eficiencia de Procesamiento</span>
+                </div>
+                <div class="metric-card">
+                    <span class="m-val">4+ Años</span>
+                    <span class="m-desc">Experiencia Industrial</span>
+                </div>
+                <div class="metric-card">
+                    <span class="m-val">ICAO / FAA</span>
+                    <span class="m-desc">Cumplimiento de Estándares</span>
+                </div>
+            </div>
+
+            <div class="section-label">Estado de Despliegue</div>
+            <div style="background: rgba(88,166,255,0.05); padding: 20px; border-radius: 4px; border-left: 3px solid var(--accent);">
+                <div style="font-size: 0.9rem; font-weight: 600; margin-bottom: 5px;">Inicializando Portafolio...</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">
+                    Optimizando actualmente el repositorio de proyectos. La documentación técnica completa para Modernización de BHS y Herramientas SCADA en C# estará disponible próximamente.
+                </div>
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>
