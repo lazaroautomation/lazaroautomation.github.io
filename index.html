@@ -50,6 +50,24 @@
             flex-direction: column;
         }
 
+        /* Language Toggle Styles */
+        .lang-switcher { display: flex; gap: 8px; margin-bottom: 25px; }
+        .lang-btn {
+            text-decoration: none;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            transition: 0.2s;
+        }
+        .lang-btn.active {
+            background: rgba(88, 166, 255, 0.1);
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
         .profile-img {
             width: 120px;
             height: 120px;
@@ -97,12 +115,7 @@
             display: block;
         }
 
-        .summary {
-            font-size: 1rem;
-            line-height: 1.6;
-            color: var(--text-main);
-            margin-bottom: 35px;
-        }
+        .summary { font-size: 1rem; line-height: 1.6; color: var(--text-main); margin-bottom: 35px; }
 
         .metrics-grid {
             display: grid;
@@ -119,17 +132,12 @@
             transition: all 0.2s ease;
         }
 
-        .metric-card:hover {
-            border-color: var(--accent);
-            background: rgba(88, 166, 255, 0.05);
-            transform: translateY(-2px);
-        }
+        .metric-card:hover { border-color: var(--accent); background: rgba(88, 166, 255, 0.05); transform: translateY(-2px); }
 
         .m-val { font-size: 1.2rem; font-weight: 700; color: #fff; display: block; }
         .m-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
 
         .btn-container { margin-top: 40px; width: 100%; }
-        
         .btn {
             width: 100%;
             padding: 12px 15px;
@@ -145,9 +153,7 @@
             margin-bottom: 10px;
         }
         .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
-        .btn-primary:hover { opacity: 0.9; }
         .btn-secondary { background: #21262d; color: var(--text-main); }
-        .btn-secondary:hover { background: #30363d; }
 
         @media (max-width: 850px) {
             .console { grid-template-columns: 1fr; }
@@ -159,6 +165,11 @@
 
     <div class="console">
         <aside class="sidebar">
+            <div class="lang-switcher">
+                <a href="index.html" class="lang-btn active">EN</a>
+                <a href="index_es.html" class="lang-btn">ES</a>
+            </div>
+
             <img src="profile.png" alt="Lázaro M. Fuentes" class="profile-img">
             <div class="name-tag">
                 <h1>Lázaro M. Fuentes</h1>
