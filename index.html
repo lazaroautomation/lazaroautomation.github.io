@@ -3,22 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lázaro M. Fuentes | Automation Engineering Portfolio</title>
+    <title>Lázaro M. Fuentes | Automation Engineering Console</title>
     <style>
         :root {
-            --bg-dark: #0a0c10;
-            --surface: #12171d;
-            --border: #2d333b;
-            --accent-blue: #2f81f7;
-            --accent-green: #3fb950;
-            --text-primary: #f0f6fc;
-            --text-secondary: #8b949e;
+            --bg: #0d1117;
+            --surface: #161b22;
+            --border: #30363d;
+            --accent: #58a6ff;
+            --success: #238636;
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
         }
 
+        * { box-sizing: border-box; }
+
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-primary);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            background-image: radial-gradient(var(--border) 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
             margin: 0;
             display: flex;
             justify-content: center;
@@ -26,180 +30,193 @@
             min-height: 100vh;
         }
 
-        /* Dashboard Container */
-        .dashboard {
+        .console {
             width: 95%;
-            max-width: 1000px;
+            max-width: 1100px;
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 6px;
             display: grid;
-            grid-template-columns: 300px 1fr;
+            grid-template-columns: 320px 1fr;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
         }
 
-        /* Profile Section */
         .sidebar {
             padding: 40px 30px;
             background: rgba(0, 0, 0, 0.2);
             border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
         }
 
         .profile-img {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            border: 2px solid var(--border);
-            margin-bottom: 25px;
-            object-fit: cover;
-            user-select: none;
-            -webkit-user-drag: none;
-        }
-
-        .identity h1 { font-size: 1.25rem; margin: 0; font-weight: 600; }
-        .identity p { font-size: 0.85rem; color: var(--text-secondary); margin-top: 5px; }
-
-        /* Main Content */
-        .content { padding: 40px; }
-        
-        .section-title {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--accent-blue);
+            width: 120px;
+            height: 120px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
             margin-bottom: 20px;
+            object-fit: cover;
+            filter: grayscale(20%);
+        }
+
+        .name-tag h1 { font-size: 1.4rem; margin: 0; font-weight: 600; color: #fff; }
+        .name-tag p { font-size: 0.85rem; color: var(--accent); margin: 5px 0 20px 0; font-family: monospace; }
+
+        .contact-info { font-size: 0.8rem; color: var(--text-muted); line-height: 1.8; }
+        .contact-info b { color: var(--text-main); }
+
+        .main-display { padding: 40px; position: relative; }
+
+        .status-header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 10px;
-        }
-        
-        .section-title::after { content: ""; height: 1px; background: var(--border); flex-grow: 1; }
-
-        .summary-box {
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: var(--text-secondary);
             margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
         }
 
-        /* KPI Grid */
-        .kpi-grid {
+        .status-badge {
+            background: rgba(35, 134, 54, 0.15);
+            color: #3fb950;
+            border: 1px solid rgba(63, 185, 80, 0.3);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .section-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 1.5px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .summary {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-main);
+            margin-bottom: 35px;
+        }
+
+        .metrics-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 15px;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
 
-        .kpi-card {
-            background: rgba(255,255,255,0.03);
+        .metric-card {
+            background: rgba(255,255,255,0.02);
             border: 1px solid var(--border);
-            padding: 15px;
+            padding: 20px;
             border-radius: 4px;
+            transition: all 0.2s ease;
         }
 
-        .kpi-label { font-size: 0.65rem; color: var(--text-secondary); display: block; }
-        .kpi-value { font-size: 0.9rem; color: var(--text-primary); font-weight: 500; margin-top: 5px; }
-
-        /* Loading Indicator */
-        .loading-status {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 0.8rem;
-            color: var(--accent-green);
-            background: rgba(63, 185, 80, 0.1);
-            padding: 10px 15px;
-            border-radius: 4px;
-            margin-top: 40px;
+        .metric-card:hover {
+            border-color: var(--accent);
+            background: rgba(88, 166, 255, 0.05);
+            transform: translateY(-2px);
         }
 
-        .spinner {
-            width: 14px;
-            height: 14px;
-            border: 2px solid rgba(63, 185, 80, 0.2);
-            border-top: 2px solid var(--accent-green);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
+        .m-val { font-size: 1.2rem; font-weight: 700; color: #fff; display: block; }
+        .m-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
 
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-
-        .btn-group { display: flex; gap: 10px; margin-top: 25px; }
+        .btn-container { margin-top: 40px; width: 100%; }
+        
         .btn {
-            text-decoration: none;
-            font-size: 0.85rem;
-            padding: 8px 16px;
+            width: 100%;
+            padding: 12px 15px;
             border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
             transition: 0.2s;
             border: 1px solid var(--border);
-            color: var(--text-primary);
-            background: #21262d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
         }
-        .btn:hover { background: #30363d; border-color: #8b949e; }
-        .btn-primary { background: var(--accent-blue); color: white; border-color: var(--accent-blue); }
-        .btn-primary:hover { background: #1f6feb; }
+        .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+        .btn-primary:hover { opacity: 0.9; }
+        .btn-secondary { background: #21262d; color: var(--text-main); }
+        .btn-secondary:hover { background: #30363d; }
 
-        @media (max-width: 800px) {
-            .dashboard { grid-template-columns: 1fr; }
-            .sidebar { border-right: none; border-bottom: 1px solid var(--border); text-align: center; }
-            .profile-img { margin-left: auto; margin-right: auto; }
+        @media (max-width: 850px) {
+            .console { grid-template-columns: 1fr; }
+            .sidebar { border-right: none; border-bottom: 1px solid var(--border); }
         }
     </style>
 </head>
-<body oncontextmenu="return false;">
+<body>
 
-    <div class="dashboard">
+    <div class="console">
         <aside class="sidebar">
             <img src="profile.png" alt="Lázaro M. Fuentes" class="profile-img">
-            <div class="identity">
+            <div class="name-tag">
                 <h1>Lázaro M. Fuentes</h1>
                 <p>Automation Engineer</p>
-                <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 15px;">
-                    <span style="display: block; margin-bottom: 5px;">📍 Mexico City Area</span>
-                    <span style="display: block; margin-bottom: 5px;">🎓 CUJAE Engineer</span>
-                    <span style="display: block;">💼 Co-founder @ Autómata SRL</span>
-                </div>
             </div>
             
-            <div class="btn-group" style="flex-direction: column; margin-top: 30px;">
-                <a href="https://www.linkedin.com/in/lazaroautomation" class="btn btn-primary">Connect on LinkedIn</a>
-                <a href="mailto:lazaroautomation@gmail.com" class="btn">Send Email</a>
+            <div class="contact-info">
+                <div><b>Location:</b> Mexico City</div>
+                <div><b>Education:</b> CUJAE Automation</div>
+                <div><b>Specialty:</b> PLC / SCADA / C#</div>
+                <div style="margin-top: 15px;"><b>Core Systems:</b></div>
+                <div style="font-size: 0.75rem;">BHS, ALCMS, HVAC, BMS</div>
+            </div>
+
+            <div class="btn-container">
+                <a href="https://www.linkedin.com/in/lazaroautomation" class="btn btn-primary">LinkedIn Profile</a>
+                <a href="mailto:lazaroautomation@gmail.com" class="btn btn-secondary">Contact Engineer</a>
             </div>
         </aside>
 
-        <main class="content">
-            <div class="section-title">Professional Summary</div>
-            <div class="summary-box">
-                Results-oriented engineer with 4+ years of experience in high-stakes environments. 
-                I specialize in the full automation lifecycle—from <strong>electrical design</strong> and 
-                <strong>PLC/HMI programming</strong> to <strong>C#/.NET</strong> industrial software development. 
-                Expert in modernizing <strong>Airport Systems (BHS, ALCMS, HVAC)</strong> aligned with ICAO/FAA standards.
+        <main class="main-display">
+            <div class="status-header">
+                <div class="section-label" style="margin:0;">Engineering Summary</div>
+                <div class="status-badge">SYSTEM_ONLINE: ACTIVE_FREELANCE</div>
             </div>
 
-            <div class="section-title">Key Performance Metrics</div>
-            <div class="kpi-grid">
-                <div class="kpi-card">
-                    <span class="kpi-label">System Reliability</span>
-                    <div class="kpi-value">+30% Uptime Optimization</div>
+            <div class="summary">
+                Specialized in the <b>full automation lifecycle</b>. I blend hardware integration 
+                with C#/.NET industrial software to deliver solutions for <b>critical infrastructure</b>, 
+                specifically modernizing international airport systems.
+            </div>
+
+            <div class="section-label">Performance Analytics</div>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <span class="m-val">+30%</span>
+                    <span class="m-desc">Downtime Reduction</span>
                 </div>
-                <div class="kpi-card">
-                    <span class="kpi-label">Process Efficiency</span>
-                    <div class="kpi-value">-20% Baggage Lead Time</div>
+                <div class="metric-card">
+                    <span class="m-val">+20%</span>
+                    <span class="m-desc">Processing Efficiency</span>
                 </div>
-                <div class="kpi-card">
-                    <span class="kpi-label">Technical Stack</span>
-                    <div class="kpi-value">Siemens / C# / .NET / SCADA</div>
+                <div class="metric-card">
+                    <span class="m-val">4+ Years</span>
+                    <span class="m-desc">Industrial Experience</span>
                 </div>
-                <div class="kpi-card">
-                    <span class="kpi-label">Compliance</span>
-                    <div class="kpi-value">ICAO & FAA Certified Systems</div>
+                <div class="metric-card">
+                    <span class="m-val">ICAO / FAA</span>
+                    <span class="m-desc">Standard Compliance</span>
                 </div>
             </div>
 
-            <div class="loading-status">
-                <div class="spinner"></div>
-                <span>Full Portfolio & Project Repository soon...</span>
+            <div class="section-label">Deployment Status</div>
+            <div style="background: rgba(88,166,255,0.05); padding: 20px; border-radius: 4px; border-left: 3px solid var(--accent);">
+                <div style="font-size: 0.9rem; font-weight: 600; margin-bottom: 5px;">Portfolio Initializing...</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">
+                    Currently optimizing the project repository. Full technical documentation for BHS Modernization and C# SCADA Tools will be available shortly.
+                </div>
             </div>
         </main>
     </div>
