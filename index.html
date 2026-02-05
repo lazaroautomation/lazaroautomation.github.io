@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lázaro M. Fuentes | Lead Automation Engineer</title>
+    <title>Lázaro M. Fuentes | Systems Architect & Automation Engineer</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;500&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
@@ -40,6 +40,7 @@
             padding: 5px 20px;
             border-bottom: 1px solid var(--primary);
             position: fixed; top: 0; width: 100%; z-index: 1001;
+            display: flex; justify-content: space-between;
         }
 
         /* --- NAVIGATION --- */
@@ -56,7 +57,7 @@
         /* --- HERO --- */
         .hero { height: 90vh; display: flex; flex-direction: column; justify-content: center; padding: 0 10%; }
         .namespace { color: var(--warning); font-family: 'JetBrains Mono', monospace; margin-bottom: 10px; }
-        .hero h1 { font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 800; letter-spacing: -2px; }
+        .hero h1 { font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 800; letter-spacing: -2px; line-height: 1.1; }
         .hero .highlight { color: var(--primary); }
 
         /* --- BENTO GRID PROJECTS --- */
@@ -68,8 +69,9 @@
         .bento-card {
             background: var(--surface); border: 1px solid #30363d; border-radius: 20px;
             padding: 30px; position: relative; transition: 0.3s; overflow: hidden;
+            display: flex; flex-direction: column;
         }
-        .bento-card:hover { border-color: var(--primary); background: #1c2128; }
+        .bento-card:hover { border-color: var(--primary); background: #1c2128; transform: translateY(-5px); }
         
         /* Memory address deco */
         .bento-card::before {
@@ -78,21 +80,24 @@
         }
 
         .img-placeholder {
-            width: 100%; height: 200px; background: #0d1117; border-radius: 12px;
+            width: 100%; height: 180px; background: #0d1117; border-radius: 12px;
             margin-bottom: 20px; border: 1px dashed #30363d;
             display: flex; align-items: center; justify-content: center;
-            color: #30363d; font-family: 'JetBrains Mono', monospace;
+            color: #30363d; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
         }
 
         .card-lg { grid-column: span 8; }
         .card-md { grid-column: span 4; }
+        .card-full { grid-column: span 12; }
 
         /* --- SCROLL DOCKER (PLC THEME) --- */
         .docker-container { display: flex; gap: 20px; overflow-x: auto; padding: 20px 0; scrollbar-width: none; }
         .docker-card {
             min-width: 350px; background: #010409; border-left: 4px solid var(--primary);
             padding: 30px; border-radius: 4px 20px 20px 4px;
+            transition: 0.3s;
         }
+        .docker-card:hover { background: var(--surface); }
 
         /* --- SOCIAL FLOATING --- */
         .social-dock {
@@ -100,13 +105,20 @@
             display: flex; flex-direction: column; gap: 25px; z-index: 100;
         }
         .social-dock a { color: var(--text-dim); text-decoration: none; font-family: 'JetBrains Mono', monospace; writing-mode: vertical-rl; font-size: 0.7rem; transition: 0.3s; }
-        .social-dock a:hover { color: var(--primary); }
+        .social-dock a:hover { color: var(--primary); transform: translateX(-3px); }
 
-        footer { text-align: center; padding: 50px; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; border-top: 1px solid #30363d; }
+        footer { text-align: center; padding: 50px; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; border-top: 1px solid #30363d; margin-top: 50px; }
+
+        /* Metric badge */
+        .metric-badge {
+            display: inline-block; padding: 4px 8px; background: rgba(126, 231, 135, 0.1); 
+            color: var(--accent); border-radius: 4px; font-size: 0.75rem; font-family: 'JetBrains Mono'; margin-top: 10px;
+        }
 
         @media (max-width: 800px) {
             .card-lg, .card-md { grid-column: span 12; }
             .social-dock { display: none; }
+            .hero h1 { font-size: 3rem; }
         }
     </style>
 </head>
@@ -114,6 +126,7 @@
 
     <div class="terminal-status">
         <span id="typing-text">System.Diagnostics.Process.Start("Lazaro_Fuentes_Portfolio.exe")... Status: Running [OK]</span>
+        <span>MEM: 64% | CPU: 12%</span>
     </div>
 
     <nav>
@@ -121,59 +134,111 @@
             <span style="color: var(--primary);">public class</span> <span style="color: var(--text-main);">Portfolio</span>
         </div>
         <div style="display: flex; gap: 15px;">
-            <a href="https://github.com/tu-usuario" target="_blank" style="color: var(--text-main);"><img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="20" style="filter: invert(1);"></a>
+            <a href="https://github.com/lazaroautomation" target="_blank" style="text-decoration: none; color: var(--text-dim); font-size: 0.8rem; font-family: 'JetBrains Mono';">View Source</a>
         </div>
     </nav>
 
     <div class="social-dock">
-        <a href="#">GITHUB</a>
-        <a href="#">LINKEDIN</a>
-        <a href="#">INSTAGRAM</a>
+        <a href="https://github.com/lazaroautomation">GITHUB</a>
+        <a href="https://www.linkedin.com/in/lazaroautomation">LINKEDIN</a>
+        <a href="mailto:lazaroautomation@gmail.com">EMAIL</a>
     </div>
 
     <header class="hero">
         <div class="namespace reveal">namespace Lazaro.Automation.Core {</div>
         <h1 class="reveal">Lázaro M. <span class="highlight">Fuentes</span></h1>
-        <p class="reveal" style="font-family: 'JetBrains Mono'; color: var(--text-dim); margin-left: 20px;">
-            // Lead Engineer & C# Specialist<br>
-            // Airport Infrastructure & Industrial Safety
+        <p class="reveal" style="font-family: 'JetBrains Mono'; color: var(--text-dim); margin-left: 20px; line-height: 1.6;">
+            // Systems Architect & Polymath Engineer<br>
+            // Bridging Level 0 (Sensors) to Level 3 (Cloud)<br>
+            // Specialized in Critical Airport Infrastructure
         </p>
         <div class="namespace reveal" style="margin-top:10px;">}</div>
+        
+        <div class="reveal" style="margin-top: 40px; margin-left: 20px;">
+            <a href="#projects" style="padding: 12px 25px; border: 1px solid var(--primary); color: var(--primary); text-decoration: none; border-radius: 4px; font-family: 'JetBrains Mono'; font-size: 0.8rem; transition: 0.3s;">
+                > Initialize_Portfolio()
+            </a>
+        </div>
     </header>
 
-    <section id="labs" class="reveal">
-        <span class="section-tag">[GET] /api/projects_research</span>
+    <section id="projects" class="reveal">
+        <span class="section-tag">[GET] /api/featured_deployments</span>
         <div class="bento-grid">
             <div class="bento-card card-lg" data-addr="DB10.X0.1">
-                <div class="img-placeholder">IMAGE_UPLOAD_PENDING</div>
-                <h3 style="color: var(--primary);">SCADA Interface Library</h3>
-                <p style="color: var(--text-dim); margin-top:10px;">Desarrollo de un framework en C# para la visualización de datos en tiempo real, optimizando el polling rate de PLCs industriales.</p>
+                <div class="img-placeholder">[DIAGRAM: BHS_LOGIC_FLOW_V2]</div>
+                <h3 style="color: var(--primary);">BHS Logic Modernization</h3>
+                <p style="color: var(--text-dim); margin-top:10px; font-size: 0.9rem;">
+                    Co-led the complete hardware/software refactoring for Havana Int'l Airport Baggage Handling System. 
+                    Developed collision avoidance and bottleneck prevention algorithms.
+                </p>
+                <div><span class="metric-badge">+25% Processing Efficiency</span></div>
             </div>
+
             <div class="bento-card card-md" data-addr="I0.0">
-                <div class="img-placeholder">IMAGE_UPLOAD_PENDING</div>
-                <h3>BHS Control Logic</h3>
-                <p style="color: var(--text-dim); margin-top:10px;">Algoritmos de clasificación para sistemas de equipaje de alta criticidad.</p>
+                <div class="img-placeholder">[ARCH: UNS_MQTT_NODE_RED]</div>
+                <h3>IoT & UNS Architecture</h3>
+                <p style="color: var(--text-dim); margin-top:10px; font-size: 0.9rem;">
+                    Developing Event-Driven Architectures using ESP32, Node-RED, and InfluxDB. 
+                    Bridging legacy machines to modern dashboards.
+                </p>
+                <div><span class="metric-badge">Real-Time Telemetry</span></div>
+            </div>
+
+            <div class="bento-card card-md" data-addr="MW200">
+                <div class="img-placeholder">[LOGIC: PBB_SAFETY_INTERLOCK]</div>
+                <h3>Passenger Boarding Bridges</h3>
+                <p style="color: var(--text-dim); margin-top:10px; font-size: 0.9rem;">
+                    PLC software upgrades and VFD programming for critical airside equipment. 
+                    Optimized safety interlocks and positioning logic.
+                </p>
+                <div><span class="metric-badge">-30% Downtime</span></div>
+            </div>
+
+            <div class="bento-card card-lg" data-addr="OB1">
+                <div class="img-placeholder">[CODE: C#_SCADA_INTERFACE]</div>
+                <h3 style="color: var(--primary);">Custom Industrial Software (C#/.NET)</h3>
+                <p style="color: var(--text-dim); margin-top:10px; font-size: 0.9rem;">
+                    Building custom mini-SCADA tools and protocols to interface with legacy PLCs 
+                    where standard commercial solutions fail.
+                </p>
             </div>
         </div>
     </section>
 
     <section id="history" class="reveal">
-        <span class="section-tag">[VIEW] /career_log</span>
+        <span class="section-tag">[VIEW] /career_log_and_standards</span>
         <div class="docker-container">
             <div class="docker-card">
-                <div style="color: var(--accent); font-family: 'JetBrains Mono'; margin-bottom: 10px;">01_ALCMS</div>
-                <h4>Airfield Lighting Lead</h4>
-                <p style="font-size: 0.9rem; color: var(--text-dim); margin-top: 10px;">Liderazgo técnico en la modernización de sistemas de iluminación aeronáutica a nivel nacional.</p>
+                <div style="color: var(--accent); font-family: 'JetBrains Mono'; margin-bottom: 10px;">01_AIRFIELD_LIGHTING</div>
+                <h4>ALCMS Architect</h4>
+                <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 10px;">
+                    Led software development for Airfield Lighting Control. 
+                    Managed communication between Control Tower (CCR) and field logic.
+                </p>
             </div>
             <div class="docker-card">
-                <div style="color: var(--accent); font-family: 'JetBrains Mono'; margin-bottom: 10px;">02_FUEL_SYS</div>
-                <h4>Jet A1 Custody</h4>
-                <p style="font-size: 0.9rem; color: var(--text-dim); margin-top: 10px;">Sistemas de transferencia segura de combustible bajo normas IEC 61508.</p>
+                <div style="color: var(--accent); font-family: 'JetBrains Mono'; margin-bottom: 10px;">02_FUEL_SAFETY</div>
+                <h4>Jet A1 Custody (IEC 61508)</h4>
+                <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 10px;">
+                    Maintained high-reliability supervision systems for fuel transfer. 
+                    Audited supplier proposals for safety compliance.
+                </p>
             </div>
             <div class="docker-card">
-                <div style="color: var(--accent); font-family: 'JetBrains Mono'; margin-bottom: 10px;">03_BORDER</div>
-                <h4>Secure Infrastructure</h4>
-                <p style="font-size: 0.9rem; color: var(--text-dim); margin-top: 10px;">Integración de sistemas de seguridad nacional y logística industrial.</p>
+                <div style="color: var(--accent); font-family: 'JetBrains Mono'; margin-bottom: 10px;">03_SMART_PARKING</div>
+                <h4>Automated Parking Systems</h4>
+                <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 10px;">
+                    Transitioned major airport parking from analog/manual to fully automated systems. 
+                    Handled technical feasibility and vendor selection.
+                </p>
+            </div>
+             <div class="docker-card">
+                <div style="color: var(--accent); font-family: 'JetBrains Mono'; margin-bottom: 10px;">04_HVAC_BMS</div>
+                <h4>BMS & Energy Efficiency</h4>
+                <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 10px;">
+                    Advisor for Chiller and AHU optimization. 
+                    Recently designed the BMS architecture for a corporate floor plant.
+                </p>
             </div>
         </div>
     </section>
