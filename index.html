@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lázaro M. Fuentes | Systems Architect & Consultant</title>
-    <meta name="description" content="Lázaro M. Fuentes - Automated Systems Architect bridging Level 0 (Field) to Level 3 (Cloud). Specialist in Airport BHS, ALCMS, and IIoT Integration.">
+    <title>Lázaro M. Fuentes | Systems Architect</title>
+    <meta name="description" content="Lázaro M. Fuentes - Automated Systems Architect bridging Level 0 (Field) to Level 3 (Cloud).">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2358a6ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='4' y='4' width='16' height='16' rx='2' ry='2'></rect><rect x='9' y='9' width='6' height='6'></rect><line x1='9' y1='1' x2='9' y2='4'></line><line x1='15' y1='1' x2='15' y2='4'></line><line x1='9' y1='20' x2='9' y2='23'></line><line x1='15' y1='20' x2='15' y2='23'></line><line x1='20' y1='9' x2='23' y2='9'></line><line x1='20' y1='14' x2='23' y2='14'></line><line x1='1' y1='9' x2='4' y2='9'></line><line x1='1' y1='14' x2='4' y2='14'></line></svg>">
+    
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     
@@ -117,28 +119,18 @@
             display: flex; justify-content: center; align-items: center;
             position: relative; height: 400px;
         }
-        .orbit-ring {
-            position: absolute; border: 1px dashed var(--border); border-radius: 50%;
-            animation: spin 60s linear infinite;
+        .hero-img-container {
+            width: 350px; height: 350px;
+            border-radius: 50%; border: 3px solid var(--primary);
+            padding: 5px; background: rgba(88, 166, 255, 0.1);
+            position: relative; overflow: hidden;
+            box-shadow: 0 0 50px rgba(88, 166, 255, 0.2);
         }
-        .ring-1 { width: 350px; height: 350px; opacity: 0.3; animation-duration: 40s; }
-        .ring-2 { width: 250px; height: 250px; opacity: 0.5; animation-duration: 25s; animation-direction: reverse; }
-
-        .arch-hub {
-            width: 80px; height: 80px; background: var(--surface);
-            border: 2px solid var(--primary); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 0 40px rgba(88, 166, 255, 0.2); z-index: 10;
+        .hero-img-container img {
+            width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
+            filter: grayscale(10%); transition: 0.5s;
         }
-        .node-dot {
-            width: 12px; height: 12px; background: var(--surface);
-            border: 2px solid var(--text-dim); border-radius: 50%;
-            position: absolute; top: 50%; left: 50%;
-        }
-        .n1 { transform: translate(125px, 0); } 
-        .n2 { transform: translate(-125px, 0); } 
-        .n3 { transform: translate(0, 175px); }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .hero-img-container:hover img { filter: grayscale(0%); transform: scale(1.05); }
 
         /* --- TECH RIBBON --- */
         .tech-ribbon {
@@ -186,27 +178,20 @@
             margin-bottom: 15px; display: block; opacity: 0.8; letter-spacing: 0.5px;
         }
 
-        /* --- CSS DIAGRAMS --- */
+        /* --- DIAGRAM BOXES (For Images) --- */
         .diagram-box {
             width: 100%; height: 180px; background: #050d18; border-radius: 8px;
             margin-bottom: 25px; position: relative; overflow: hidden;
             border: 1px dashed var(--border); transition: 0.3s;
         }
-        .project-card:hover .diagram-box { 
-            border-color: var(--primary); 
-            box-shadow: inset 0 0 20px rgba(88, 166, 255, 0.05);
+        .diagram-box img {
+            width: 100%; height: 100%; object-fit: cover;
+            opacity: 0.8; transition: 0.5s;
         }
+        .project-card:hover .diagram-box { border-color: var(--primary); }
+        .project-card:hover .diagram-box img { opacity: 1; transform: scale(1.05); }
 
-        /* Diagram Styles */
-        .style-ladder .rung { width: 100%; height: 2px; top: 30%; left: 0; position: absolute; background: #30363d; }
-        .style-ladder .rung::after { content: ''; position: absolute; top: 50px; width: 100%; height: 2px; background: #30363d; }
-        .style-ladder .contact { width: 10px; height: 20px; border-left: 2px solid var(--primary); border-right: 2px solid var(--primary); position: absolute; top: 20px; left: 20%; }
-        .style-ladder .coil { 
-            width: 20px; height: 20px; border: 2px solid var(--accent); border-radius: 50%; 
-            position: absolute; top: 20px; right: 20%; transition: 0.3s;
-        }
-        .project-card:hover .style-ladder .coil { background: var(--accent); box-shadow: 0 0 15px var(--accent); }
-        
+        /* Diagram CSS Fallbacks (for cards without images) */
         .style-topo .node { 
             width: 40px; height: 40px; border: 2px solid var(--text-dim); border-radius: 4px; 
             position: absolute; display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--text-dim);
@@ -216,7 +201,6 @@
         .style-topo .node.p1 { top: 20%; left: 20%; }
         .style-topo .node.p2 { bottom: 20%; right: 20%; }
         .project-card:hover .style-topo .node { border-color: var(--primary); color: var(--primary); box-shadow: 0 0 10px rgba(88,166,255,0.2); }
-        .project-card:hover .diagram-box i { filter: drop-shadow(0 0 8px rgba(255,255,255,0.3)); transition: 0.3s; }
 
         /* --- METRICS & DATE BADGES --- */
         .metric { font-family: 'JetBrains Mono'; color: var(--accent); font-size: 0.8rem; font-weight: 700; margin-top: 0; display: inline-block; background: rgba(126, 231, 135, 0.05); padding: 5px 10px; border-radius: 4px; }
@@ -224,8 +208,11 @@
             position: absolute; top: 20px; right: 20px; 
             font-family: 'JetBrains Mono'; font-size: 0.75rem; 
             color: var(--text-dim); border: 1px solid var(--border); 
-            padding: 4px 8px; border-radius: 4px;
+            padding: 4px 8px; border-radius: 4px; z-index: 10;
+            background: rgba(13, 17, 23, 0.8);
         }
+        .repo-link { position: absolute; top: 20px; right: 20px; color: var(--text-dim); transition: 0.2s; z-index: 10; }
+        .repo-link:hover { color: var(--text-main); }
 
         /* --- EXPERIENCE --- */
         .timeline-item {
@@ -251,7 +238,7 @@
 
         @media (max-width: 900px) {
             .hero { grid-template-columns: 1fr; text-align: left; padding-top: 100px; }
-            .hero-visual { height: 200px; margin-bottom: 40px; }
+            .hero-visual { height: 350px; margin-bottom: 40px; }
             .bento-grid { grid-template-columns: 1fr; }
             .card-wide { grid-column: span 1; }
             .timeline-item { grid-template-columns: 1fr; gap: 10px; }
@@ -317,15 +304,8 @@
         </div>
 
         <div class="hero-visual">
-            <div class="orbit-ring ring-1">
-                <div class="node-dot n3"></div>
-            </div>
-            <div class="orbit-ring ring-2">
-                <div class="node-dot n1"></div>
-                <div class="node-dot n2"></div>
-            </div>
-            <div class="arch-hub">
-                <i data-lucide="layers" size="36" color="#58a6ff"></i>
+            <div class="hero-img-container">
+                <img src="profile.png" alt="Lázaro M. Fuentes Profile">
             </div>
         </div>
     </header>
@@ -353,12 +333,8 @@
             <div class="project-card card-wide">
                 <span class="card-breadcrumb">L0: FIELD HARDWARE > L1: PLC LOGIC</span>
                 <div class="date-tag">2021 - 2024</div>
-                <div class="diagram-box style-ladder">
-                    <div class="rung" style="top:30%"></div>
-                    <div class="contact"></div>
-                    <div class="coil"></div>
-                    <div class="rung" style="top:60%"></div>
-                    <div style="position:absolute; bottom:10px; right:10px; font-size:10px; color:#58a6ff; font-family:monospace;">BHS_LOGIC_V1</div>
+                <div class="diagram-box">
+                    <img src="BHS.png" alt="Baggage Handling System Panel">
                 </div>
                 <div>
                     <h3 style="color: var(--primary);">Baggage Handling Systems</h3>
@@ -377,11 +353,8 @@
             <div class="project-card">
                 <span class="card-breadcrumb">L1: PLC > L2: SCADA</span>
                 <div class="date-tag">2022 - 2024</div>
-                <div class="diagram-box style-topo">
-                    <div class="node center"><i data-lucide="server" size="16"></i></div>
-                    <div class="node p1"><i data-lucide="lightbulb" size="16"></i></div>
-                    <div class="node p2"><i data-lucide="lightbulb" size="16"></i></div>
-                    <div style="position:absolute; width:100%; height:1px; background:#30363d; top:50%; transform:rotate(45deg);"></div>
+                <div class="diagram-box">
+                    <img src="ALCMS.png" alt="ALCMS SCADA Interface">
                 </div>
                 <h3>Airfield Lighting (ALCMS)</h3>
                 <p style="font-size: 0.95rem; margin-top: 10px;">
@@ -453,10 +426,8 @@
             <div class="project-card">
                 <span class="card-breadcrumb">L0: ESP32 > L3: GRAFANA</span>
                 <a href="#" class="repo-link"><i data-lucide="github" size="20"></i></a>
-                <div class="diagram-box style-topo">
-                    <div class="node center" style="border-color: var(--accent); color: var(--accent);">MQTT</div>
-                    <div class="node p1">ESP32</div>
-                    <div class="node p2">DB</div>
+                <div class="diagram-box">
+                    <img src="VendingMachineIoT.png" alt="IT/OT Pipeline Dashboard">
                 </div>
                 <h3 style="color: var(--text-dim);">IT/OT FOSS Pipeline</h3>
                 <p style="font-size: 0.95rem; margin-top: 10px;">
