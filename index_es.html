@@ -3,236 +3,600 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lázaro M. Fuentes | Consola de Ingeniería de Automatización</title>
-    <meta name="description" content="Portfolio de Lázaro M. Fuentes, Ingeniero de Automatización especializado en PLC, SCADA y C# para infraestructuras críticas.">
-    <meta name="author" content="Lázaro M. Fuentes">
+    <title>Lázaro M. Fuentes | Arquitecto de Sistemas y Consultor</title>
+    <meta name="description" content="Lázaro M. Fuentes - Arquitecto de Sistemas Automatizados conectando el Nivel 0 (Campo) con el Nivel 3 (Nube). Especialista en BHS, ALCMS e Integración IIoT.">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
     <style>
         :root {
             --bg: #0d1117;
             --surface: #161b22;
+            --primary: #58a6ff; 
+            --accent: #7ee787;  
+            --warning: #d29922; 
+            --text-main: #e6edf3;
+            --text-dim: #8b949e;
+            --text-bright: #d0d7de;
+            --comment: #8b949e;
             --border: #30363d;
-            --accent: #58a6ff;
-            --success: #238636;
-            --text-main: #c9d1d9;
-            --text-muted: #8b949e;
+            --grid-line: rgba(48, 54, 61, 0.15);
         }
 
-        * { box-sizing: border-box; }
-
-        body {
-            background-color: var(--bg);
-            background-image: radial-gradient(var(--border) 0.5px, transparent 0.5px);
-            background-size: 24px 24px;
-            color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+        * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
+        
+        body { 
+            background-color: var(--bg); 
+            color: var(--text-main); 
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            background-image: 
+                radial-gradient(circle at 50% 50%, transparent 10%, var(--bg) 90%),
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 100% 100%, 50px 50px, 50px 50px;
+            background-attachment: fixed;
+            overflow-x: hidden;
+            display: flex; flex-direction: column; min-height: 100vh;
         }
 
-        .console {
-            width: 95%;
-            max-width: 1100px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            display: grid;
-            grid-template-columns: 320px 1fr;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            overflow: hidden;
-        }
-
-        .sidebar {
-            padding: 40px 30px;
-            background: rgba(0, 0, 0, 0.2);
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Selector de Idioma */
-        .lang-switcher { display: flex; gap: 8px; margin-bottom: 25px; }
-        .lang-btn {
-            text-decoration: none;
-            font-size: 0.65rem;
-            font-weight: 800;
-            padding: 4px 10px;
-            border-radius: 4px;
-            border: 1px solid var(--border);
-            color: var(--text-muted);
-            transition: 0.2s;
-        }
-        .lang-btn.active {
-            background: rgba(88, 166, 255, 0.1);
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3 { font-family: 'Inter', sans-serif; letter-spacing: -0.02em; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        p { font-size: 1.1rem; line-height: 1.6; color: var(--text-dim); }
+        
+        /* --- TERMINAL BAR --- */
+        .terminal-status {
+            background: #010409;
             color: var(--accent);
-            border-color: var(--accent);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            padding: 8px 20px;
+            border-bottom: 1px solid var(--accent);
+            position: fixed; top: 0; width: 100%; z-index: 1001;
+            display: flex; justify-content: space-between; align-items: center;
         }
+        .blinking-cursor::after { content: '_'; animation: blink 1s step-end infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
 
-        .profile-img {
-            width: 120px;
-            height: 120px;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-            margin-bottom: 20px;
-            object-fit: cover;
-            filter: grayscale(20%);
-        }
-
-        .name-tag h1 { font-size: 1.4rem; margin: 0; font-weight: 600; color: #fff; }
-        .name-tag p { font-size: 0.85rem; color: var(--accent); margin: 5px 0 20px 0; font-family: monospace; }
-
-        .contact-info { font-size: 0.8rem; color: var(--text-muted); line-height: 1.8; }
-        .contact-info b { color: var(--text-main); }
-
-        .main-display { padding: 40px; position: relative; }
-
-        .status-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
+        /* --- NAV --- */
+        nav {
+            height: 80px; display: flex; justify-content: space-between; align-items: center;
+            padding: 0 6%; position: fixed; top: 30px; width: 100%; z-index: 1000;
+            background: rgba(13, 17, 23, 0.85); backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
         }
 
-        .status-badge {
-            background: rgba(35, 134, 54, 0.15);
-            color: #3fb950;
-            border: 1px solid rgba(63, 185, 80, 0.3);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
+        .nav-cta {
+            background: var(--primary); color: var(--bg); font-weight: 700;
+            padding: 10px 20px; border-radius: 6px; text-decoration: none;
+            font-family: 'Inter', sans-serif; font-size: 0.9rem;
+            transition: 0.3s; display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 15px rgba(88, 166, 255, 0.2);
+        }
+        .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(88, 166, 255, 0.3); background: #79c0ff; }
+
+        /* LANGUAGE TOGGLE */
+        .lang-toggle {
+            font-family: 'JetBrains Mono'; font-size: 0.85rem; font-weight: 700;
+            color: var(--text-dim); text-decoration: none; border: 1px solid var(--border);
+            padding: 6px 10px; border-radius: 4px; transition: 0.2s;
+        }
+        .lang-toggle:hover { color: var(--text-main); border-color: var(--primary); }
+        .lang-active { color: var(--primary); border-color: var(--primary); background: rgba(88, 166, 255, 0.1); }
+
+        .mobile-text { display: none; }
+        .desktop-text { display: inline; }
+
+        /* --- HERO --- */
+        .hero { 
+            padding: 140px 10% 40px; 
+            display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 60px; align-items: center;
         }
 
-        .section-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            letter-spacing: 1.5px;
-            margin-bottom: 15px;
-            display: block;
+        .hero h1 { font-size: clamp(3rem, 5vw, 4.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
+        .hero .highlight { color: var(--primary); }
+        
+        .role-badge {
+            display: inline-block; padding: 6px 12px; 
+            background: rgba(56, 189, 248, 0.1); border: 1px solid var(--primary);
+            color: var(--primary); border-radius: 100px; 
+            font-family: 'JetBrains Mono'; font-size: 0.8rem; margin-bottom: 20px;
         }
 
-        .summary { font-size: 1rem; line-height: 1.6; color: var(--text-main); margin-bottom: 35px; }
-
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-bottom: 40px;
+        .csharp-comment {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--comment); font-size: 0.9rem; line-height: 1.7;
+            background: rgba(1, 4, 9, 0.6); padding: 25px;
+            border-radius: 8px; border-left: 3px solid var(--border);
+            margin-top: 30px; backdrop-filter: blur(5px);
         }
 
-        .metric-card {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid var(--border);
-            padding: 20px;
-            border-radius: 4px;
-            transition: all 0.2s ease;
+        /* --- VISUALS --- */
+        .hero-visual {
+            display: flex; justify-content: center; align-items: center;
+            position: relative; height: 400px;
+        }
+        .orbit-ring {
+            position: absolute; border: 1px dashed var(--border); border-radius: 50%;
+            animation: spin 60s linear infinite;
+        }
+        .ring-1 { width: 350px; height: 350px; opacity: 0.3; animation-duration: 40s; }
+        .ring-2 { width: 250px; height: 250px; opacity: 0.5; animation-duration: 25s; animation-direction: reverse; }
+
+        .arch-hub {
+            width: 80px; height: 80px; background: var(--surface);
+            border: 2px solid var(--primary); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 40px rgba(88, 166, 255, 0.2); z-index: 10;
+        }
+        .node-dot {
+            width: 12px; height: 12px; background: var(--surface);
+            border: 2px solid var(--text-dim); border-radius: 50%;
+            position: absolute; top: 50%; left: 50%;
+        }
+        .n1 { transform: translate(125px, 0); } 
+        .n2 { transform: translate(-125px, 0); } 
+        .n3 { transform: translate(0, 175px); }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* --- TECH RIBBON --- */
+        .tech-ribbon {
+            display: flex; justify-content: center; flex-wrap: wrap; gap: 30px;
+            padding: 30px 10%; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+            background: rgba(1, 4, 9, 0.5); margin-bottom: 60px;
+        }
+        .tech-tag {
+            font-family: 'JetBrains Mono'; font-size: 0.85rem; color: var(--text-dim);
+            display: flex; align-items: center; gap: 8px; font-weight: 600; opacity: 0.8;
+        }
+        .tech-tag:hover { color: var(--primary); opacity: 1; transition: 0.2s; }
+
+        /* --- SECTIONS --- */
+        section { padding: 40px 10% 100px; }
+        .section-header { 
+            margin-bottom: 50px; border-bottom: 1px solid var(--border); 
+            padding-bottom: 20px; display: flex; justify-content: space-between; align-items: end;
+        }
+        .section-title { font-size: 2rem; font-weight: 700; color: var(--text-main); }
+        .section-subtitle { font-family: 'JetBrains Mono'; color: var(--accent); font-size: 0.9rem; }
+
+        /* --- BENTO GRID --- */
+        .bento-grid { 
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; 
+            align-items: stretch;
+        }
+        .card-wide { grid-column: span 2; }
+        
+        .project-card {
+            background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+            padding: 30px; display: flex; flex-direction: column; 
+            transition: 0.3s ease; position: relative; overflow: hidden; height: 100%;
+        }
+        .project-card p { color: var(--text-bright); }
+
+        .project-card:hover { 
+            border-color: var(--primary); transform: translateY(-5px); 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3); 
+        }
+        .card-spacer { flex-grow: 1; min-height: 20px; }
+
+        .card-breadcrumb {
+            font-family: 'JetBrains Mono'; font-size: 0.7rem; color: var(--primary);
+            margin-bottom: 15px; display: block; opacity: 0.8; letter-spacing: 0.5px;
         }
 
-        .metric-card:hover { border-color: var(--accent); background: rgba(88, 166, 255, 0.05); transform: translateY(-2px); }
-
-        .m-val { font-size: 1.2rem; font-weight: 700; color: #fff; display: block; }
-        .m-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
-
-        .btn-container { margin-top: 40px; width: 100%; }
-        .btn {
-            width: 100%;
-            padding: 12px 15px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: 0.2s;
-            border: 1px solid var(--border);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 10px;
+        /* --- CSS DIAGRAMS --- */
+        .diagram-box {
+            width: 100%; height: 180px; background: #050d18; border-radius: 8px;
+            margin-bottom: 25px; position: relative; overflow: hidden;
+            border: 1px dashed var(--border); transition: 0.3s;
         }
-        .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
-        .btn-secondary { background: #21262d; color: var(--text-main); }
+        .project-card:hover .diagram-box { 
+            border-color: var(--primary); 
+            box-shadow: inset 0 0 20px rgba(88, 166, 255, 0.05);
+        }
 
-        @media (max-width: 850px) {
-            .console { grid-template-columns: 1fr; }
-            .sidebar { border-right: none; border-bottom: 1px solid var(--border); }
+        /* Diagram Styles */
+        .style-ladder .rung { width: 100%; height: 2px; top: 30%; left: 0; position: absolute; background: #30363d; }
+        .style-ladder .rung::after { content: ''; position: absolute; top: 50px; width: 100%; height: 2px; background: #30363d; }
+        .style-ladder .contact { width: 10px; height: 20px; border-left: 2px solid var(--primary); border-right: 2px solid var(--primary); position: absolute; top: 20px; left: 20%; }
+        .style-ladder .coil { 
+            width: 20px; height: 20px; border: 2px solid var(--accent); border-radius: 50%; 
+            position: absolute; top: 20px; right: 20%; transition: 0.3s;
+        }
+        .project-card:hover .style-ladder .coil { background: var(--accent); box-shadow: 0 0 15px var(--accent); }
+        
+        .style-topo .node { 
+            width: 40px; height: 40px; border: 2px solid var(--text-dim); border-radius: 4px; 
+            position: absolute; display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--text-dim);
+            transition: 0.3s;
+        }
+        .style-topo .node.center { top: 50%; left: 50%; transform: translate(-50%, -50%); border-color: var(--primary); color: var(--primary); }
+        .style-topo .node.p1 { top: 20%; left: 20%; }
+        .style-topo .node.p2 { bottom: 20%; right: 20%; }
+        .project-card:hover .style-topo .node { border-color: var(--primary); color: var(--primary); box-shadow: 0 0 10px rgba(88,166,255,0.2); }
+        .project-card:hover .diagram-box i { filter: drop-shadow(0 0 8px rgba(255,255,255,0.3)); transition: 0.3s; }
+
+        /* --- METRICS & DATE BADGES --- */
+        .metric { font-family: 'JetBrains Mono'; color: var(--accent); font-size: 0.8rem; font-weight: 700; margin-top: 0; display: inline-block; background: rgba(126, 231, 135, 0.05); padding: 5px 10px; border-radius: 4px; }
+        .date-tag {
+            position: absolute; top: 20px; right: 20px; 
+            font-family: 'JetBrains Mono'; font-size: 0.75rem; 
+            color: var(--text-dim); border: 1px solid var(--border); 
+            padding: 4px 8px; border-radius: 4px;
+        }
+
+        /* --- EXPERIENCE --- */
+        .timeline-item {
+            display: grid; grid-template-columns: 150px 1fr; gap: 40px; margin-bottom: 50px;
+            position: relative;
+        }
+        .timeline-line {
+            position: absolute; left: 165px; top: 0; bottom: 0; width: 2px; background: var(--border);
+        }
+        .timeline-dot {
+            width: 12px; height: 12px; background: var(--bg); border: 2px solid var(--primary);
+            border-radius: 50%; position: absolute; left: 160px; top: 6px; z-index: 2;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            margin-top: auto; border-top: 1px solid var(--border);
+            padding: 40px 10%; background: #010409;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .footer-links a { color: var(--text-dim); margin-left: 20px; text-decoration: none; font-size: 0.9rem; transition: 0.2s; }
+        .footer-links a:hover { color: var(--primary); }
+
+        @media (max-width: 900px) {
+            .hero { grid-template-columns: 1fr; text-align: left; padding-top: 100px; }
+            .hero-visual { height: 200px; margin-bottom: 40px; }
+            .bento-grid { grid-template-columns: 1fr; }
+            .card-wide { grid-column: span 1; }
+            .timeline-item { grid-template-columns: 1fr; gap: 10px; }
+            .timeline-line, .timeline-dot { display: none; }
+            .desktop-text { display: none; }
+            .mobile-text { display: inline; }
+            footer { flex-direction: column; gap: 20px; text-align: center; }
+            .footer-links a { margin: 0 10px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="console">
-        <aside class="sidebar">
-            <div class="lang-switcher">
-                <a href="index.html" class="lang-btn">EN</a>
-                <a href="index_es.html" class="lang-btn active">ES</a>
-            </div>
-
-            <img src="profile.png" alt="Lázaro M. Fuentes" class="profile-img">
-            <div class="name-tag">
-                <h1>Lázaro M. Fuentes</h1>
-                <p>Ingeniero de Automatización</p>
-            </div>
-            
-            <div class="contact-info">
-                <div><b>Ubicación:</b> Ciudad de México</div>
-                <div><b>Educación:</b> Ingeniería Automática, CUJAE</div>
-                <div><b>Especialidad:</b> PLC / SCADA / C#</div>
-                <div style="margin-top: 15px;"><b>Sistemas Core:</b></div>
-                <div style="font-size: 0.75rem;">BHS, ALCMS, HVAC, BMS</div>
-            </div>
-
-            <div class="btn-container">
-                <a href="https://www.linkedin.com/in/lazaroautomation" class="btn btn-primary">Perfil de LinkedIn</a>
-                <a href="mailto:lazaroautomation@gmail.com" class="btn btn-secondary">Contactar Ingeniero</a>
-            </div>
-        </aside>
-
-        <main class="main-display">
-            <div class="status-header">
-                <div class="section-label" style="margin:0;">Resumen de Ingeniería</div>
-                <div class="status-badge">SISTEMA_ONLINE: FREELANCE_ACTIVO</div>
-            </div>
-
-            <div class="summary">
-                Especializado en el <b>ciclo de vida completo de automatización</b>. Fusiono la integración de hardware 
-                con software industrial C#/.NET para entregar soluciones en <b>infraestructuras críticas</b>, 
-                específicamente modernizando sistemas en aeropuertos internacionales.
-            </div>
-
-            <div class="section-label">Métricas de Rendimiento</div>
-            <div class="metrics-grid">
-                <div class="metric-card">
-                    <span class="m-val">+30%</span>
-                    <span class="m-desc">Reducción de Tiempo de Inactividad</span>
-                </div>
-                <div class="metric-card">
-                    <span class="m-val">+20%</span>
-                    <span class="m-desc">Eficiencia de Procesamiento</span>
-                </div>
-                <div class="metric-card">
-                    <span class="m-val">4+ Años</span>
-                    <span class="m-desc">Experiencia Industrial</span>
-                </div>
-                <div class="metric-card">
-                    <span class="m-val">ICAO / FAA</span>
-                    <span class="m-desc">Cumplimiento de Estándares</span>
-                </div>
-            </div>
-
-            <div class="section-label">Estado de Despliegue</div>
-            <div style="background: rgba(88,166,255,0.05); padding: 20px; border-radius: 4px; border-left: 3px solid var(--accent);">
-                <div style="font-size: 0.9rem; font-weight: 600; margin-bottom: 5px;">Inicializando Portafolio...</div>
-                <div style="font-size: 0.8rem; color: var(--text-muted);">
-                    Optimizando actualmente el repositorio de proyectos. La documentación técnica completa para Modernización de BHS y Herramientas SCADA en C# estará disponible próximamente.
-                </div>
-            </div>
-        </main>
+    <div class="terminal-status">
+        <span class="mono">root@lazaro-server:~$ <span id="typewriter" class="blinking-cursor"></span></span>
+        <span class="mono" style="color: var(--text-dim);">ESTADO: 99.9%</span>
     </div>
 
+    <nav>
+        <div class="mono" style="font-weight: 700; font-size: 1.2rem;">
+            <span style="color: var(--text-dim);">&lt;</span><span style="color: var(--primary);">LAZARO</span><span style="color: var(--text-main);">.AUTOMATION</span><span style="color: var(--text-dim);">/&gt;</span>
+        </div>
+        <div style="display: flex; gap: 25px; align-items: center;">
+            <a href="#projects" style="color: var(--text-dim); text-decoration: none; font-weight: 500;">Proyectos</a>
+            <a href="#experience" style="color: var(--text-dim); text-decoration: none; font-weight: 500;">Historial</a>
+            
+            <div style="display:flex; gap:5px;">
+                <a href="index.html" class="lang-toggle">EN</a>
+                <a href="index_es.html" class="lang-toggle lang-active">ES</a>
+            </div>
+
+            <a href="#" onclick="alert('Link this to your Calendly URL')" class="nav-cta">
+                <i data-lucide="calendar-check-2" size="18"></i> 
+                <span class="desktop-text">Agendar Auditoría</span>
+                <span class="mobile-text">Auditoría</span>
+            </a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div>
+            <div class="role-badge">ARQUITECTO DE SISTEMAS Y CONSULTOR</div>
+            <h1>Lázaro M. <span class="highlight">Fuentes</span></h1>
+            <p style="margin-bottom: 20px;">
+                Conectando las capas <span style="color: #fff">Físicas (Nivel 0)</span> y <span style="color: #fff">Digitales (Nivel 3)</span> de la pirámide de automatización.
+            </p>
+            
+            <div class="csharp-comment">
+                /* <br>
+                &nbsp;* Ingeniero de Automatización y Arquitecto de Sistemas.<br>
+                &nbsp;* Con <b style="color: #fff">4+ años</b> en entornos críticos como aeropuertos internacionales,<br>
+                &nbsp;* he evolucionado de la ejecución técnica al diseño arquitectónico.<br>
+                &nbsp;*<br>
+                &nbsp;* <b style="color: #fff">ENFOQUE:</b><br>
+                &nbsp;* Refactorización de infraestructura legada y diseño de sistemas inteligentes<br>
+                &nbsp;* utilizando <b style="color: #fff">lógica PLC, C#/.NET y soluciones IoT.</b><br>
+                &nbsp;*<br>
+                &nbsp;* <b style="color: #fff">ESTRATEGIA:</b><br>
+                &nbsp;* Equilibrar la fiabilidad en campo con el desarrollo de software de alto nivel,<br>
+                &nbsp;* gestionando el ciclo técnico-económico completo <b style="color: #fff">(CAPEX/OPEX)</b>.<br>
+                &nbsp;*/
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="orbit-ring ring-1">
+                <div class="node-dot n3"></div>
+            </div>
+            <div class="orbit-ring ring-2">
+                <div class="node-dot n1"></div>
+                <div class="node-dot n2"></div>
+            </div>
+            <div class="arch-hub">
+                <i data-lucide="layers" size="36" color="#58a6ff"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="tech-ribbon">
+        <div class="tech-tag"><i data-lucide="cpu" size="16"></i> SIEMENS TIA PORTAL</div>
+        <div class="tech-tag"><i data-lucide="code" size="16"></i> C# / .NET</div>
+        <div class="tech-tag"><i data-lucide="network" size="16"></i> MQTT / UNS</div>
+        <div class="tech-tag"><i data-lucide="database" size="16"></i> INFLUXDB</div>
+        <div class="tech-tag"><i data-lucide="activity" size="16"></i> GRAFANA</div>
+        <div class="tech-tag"><i data-lucide="shield-check" size="16"></i> IEC 61508</div>
+        <div class="tech-tag"><i data-lucide="container" size="16"></i> DOCKER</div>
+    </div>
+
+    <section id="projects">
+        <div class="section-header">
+            <div>
+                <h2 class="section-title">Evolución de Proyectos</h2>
+                <span class="section-subtitle">[GET] /api/deployments?sort=chronological</span>
+            </div>
+        </div>
+
+        <div class="bento-grid">
+            
+            <div class="project-card card-wide">
+                <span class="card-breadcrumb">L0: HARDWARE CAMPO > L1: LÓGICA PLC</span>
+                <div class="date-tag">2021 - 2024</div>
+                <div class="diagram-box style-ladder">
+                    <div class="rung" style="top:30%"></div>
+                    <div class="contact"></div>
+                    <div class="coil"></div>
+                    <div class="rung" style="top:60%"></div>
+                    <div style="position:absolute; bottom:10px; right:10px; font-size:10px; color:#58a6ff; font-family:monospace;">BHS_LOGIC_V1</div>
+                </div>
+                <div>
+                    <h3 style="color: var(--primary);">Sistemas de Manejo de Equipaje (BHS)</h3>
+                    <p style="margin-top: 10px; font-size: 1rem;">
+                        <b>Implementación AIJM (2021-22)</b> y <b>Refactorización Multi-Aeropuerto (2022-24)</b>. 
+                        Co-lideré la refactorización completa de hardware/software para logística aeroportuaria crítica.
+                    </p>
+                </div>
+                <div class="card-spacer"></div>
+                <div>
+                    <span class="metric">+25% RENDIMIENTO</span>
+                    <span class="metric" style="color: var(--primary); background: rgba(88,166,255,0.1); margin-left: 10px;">SIEMENS TIA PORTAL</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <span class="card-breadcrumb">L1: PLC > L2: SCADA</span>
+                <div class="date-tag">2022 - 2024</div>
+                <div class="diagram-box style-topo">
+                    <div class="node center"><i data-lucide="server" size="16"></i></div>
+                    <div class="node p1"><i data-lucide="lightbulb" size="16"></i></div>
+                    <div class="node p2"><i data-lucide="lightbulb" size="16"></i></div>
+                    <div style="position:absolute; width:100%; height:1px; background:#30363d; top:50%; transform:rotate(45deg);"></div>
+                </div>
+                <h3>Iluminación de Pista (ALCMS)</h3>
+                <p style="font-size: 0.95rem; margin-top: 10px;">
+                    Implementación completa de SCADA para control de iluminación. Asegurando 100% de cumplimiento ICAO/FAA.
+                </p>
+                <div class="card-spacer"></div>
+                <span class="metric">CERO TIEMPO DE INACTIVIDAD</span>
+            </div>
+
+            <div class="project-card">
+                <span class="card-breadcrumb">L0: CAMPO > L1: LÓGICA SEGURIDAD</span>
+                <div class="date-tag">2022 - 2024</div>
+                <div class="diagram-box" style="display:flex; align-items:center; justify-content:center;">
+                    <i data-lucide="shield-check" size="40" color="#d29922"></i>
+                </div>
+                <h3>PBB y Custodia de Combustible</h3>
+                <p style="font-size: 0.95rem; margin-top: 10px;">
+                    <b>PBB:</b> Refactorización de lógica para posicionamiento/seguridad.<br>
+                    <b>Jet A1:</b> Actualización de sistemas de transferencia (IEC 61508).
+                </p>
+                <div class="card-spacer"></div>
+                <span class="metric" style="color: var(--warning); background: rgba(210,153,34,0.1);">-30% INACTIVIDAD PBB</span>
+            </div>
+
+            <div class="project-card">
+                <span class="card-breadcrumb">L0: SENSORES > L1: CONTROL</span>
+                <div class="date-tag">2025 - 2026</div>
+                <div class="diagram-box" style="display:flex; align-items:center; justify-content:center; background: radial-gradient(circle, #161b22 10%, #050d18 90%);">
+                    <i data-lucide="droplets" size="40" color="#58a6ff"></i>
+                </div>
+                <h3>Bombeo Corporativo de Saneamiento</h3>
+                <p style="font-size: 0.95rem; margin-top: 10px;">
+                    Lógica de redundancia a prueba de fallos para estaciones de bombeo de aguas negras en infraestructura corporativa.
+                </p>
+                <div class="card-spacer"></div>
+                <span class="metric">LÓGICA FAIL-SAFE</span>
+            </div>
+
+            <div class="project-card">
+                <span class="card-breadcrumb">L1: AUTOMATIZACIÓN > L3: NUBE</span>
+                <div class="date-tag">2026 - ...</div>
+                <div class="diagram-box style-topo">
+                    <div class="node center" style="border-color: var(--accent); color: var(--accent);">BMS</div>
+                    <div class="node p1">HVAC</div>
+                    <div class="node p2">IoT</div>
+                </div>
+                <h3 style="color: var(--accent);">Arquitectura BMS Corporativa</h3>
+                <p style="font-size: 0.95rem; margin-top: 10px;">
+                    Diseño de arquitectura escalable de BMS para instalaciones corporativas de nueva generación.
+                </p>
+                <div class="card-spacer"></div>
+                <span class="metric" style="color: var(--accent); border: 1px solid var(--accent); background: transparent;">ENFOQUE ACTUAL</span>
+            </div>
+
+            <div class="project-card card-wide">
+                <span class="card-breadcrumb">L2: SCADA > L3: EMPRESARIAL</span>
+                <div class="date-tag">LAB I+D</div>
+                <div class="diagram-box" style="display:flex; align-items:center; justify-content:center;">
+                    <i data-lucide="workflow" size="40" color="#8b949e"></i>
+                </div>
+                <h3 style="color: var(--text-dim);">UNS Basado en Eventos</h3>
+                <p style="font-size: 0.95rem; margin-top: 10px;">
+                    Creación de prototipo de arquitectura UNS (Unified Namespace) basado en MQTT y principios orientados a eventos para desacoplar hardware de aplicaciones.
+                </p>
+                <div class="card-spacer"></div>
+                <span class="metric" style="color: var(--text-dim); border: 1px solid var(--border); background: transparent;">UNIFIED NAMESPACE</span>
+            </div>
+
+            <div class="project-card">
+                <span class="card-breadcrumb">L0: ESP32 > L3: GRAFANA</span>
+                <a href="#" class="repo-link"><i data-lucide="github" size="20"></i></a>
+                <div class="diagram-box style-topo">
+                    <div class="node center" style="border-color: var(--accent); color: var(--accent);">MQTT</div>
+                    <div class="node p1">ESP32</div>
+                    <div class="node p2">DB</div>
+                </div>
+                <h3 style="color: var(--text-dim);">Pipeline IT/OT FOSS</h3>
+                <p style="font-size: 0.95rem; margin-top: 10px;">
+                    ESP32 -> Node-RED -> InfluxDB -> Grafana.
+                </p>
+                <div class="card-spacer"></div>
+                <span class="metric" style="color: var(--text-dim); border: 1px solid var(--border); background: transparent;">STACK OPEN SOURCE</span>
+            </div>
+
+            <div class="project-card card-wide">
+                <span class="card-breadcrumb">L2: DRIVER > L3: APLICACIÓN</span>
+                <a href="#" class="repo-link"><i data-lucide="github" size="20"></i></a>
+                 <div class="diagram-box" style="display:flex; align-items:center; justify-content:center;">
+                    <span class="mono" style="color: var(--primary); font-weight:700;">.NET 10</span>
+                </div>
+                <h3 style="color: var(--text-dim);">Librerías Industriales .NET</h3>
+                <p style="font-size: 0.95rem; margin-top: 10px;">
+                    Refactorización de librerías de comunicación industrial (Modbus TCP) a .NET 10 usando <b>Async y Eventos</b> para drivers de alto rendimiento.
+                </p>
+                <div class="card-spacer"></div>
+                <span class="metric" style="color: var(--text-dim); border: 1px solid var(--border); background: transparent;">ARQUITECTURA ASÍNCRONA</span>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="experience">
+        <div class="section-header">
+            <div>
+                <h2 class="section-title">Registro Profesional</h2>
+                <span class="section-subtitle">[VIEW] /var/log/history</span>
+            </div>
+        </div>
+        
+        <div class="timeline-item">
+            <div class="timeline-line"></div>
+            <div class="timeline-dot"></div>
+            <div class="mono" style="color: var(--accent);">ABR 2025 - PRESENTE</div>
+            <div>
+                <h3 style="font-size: 1.2rem;">Consultor Independiente (Grupo SIA)</h3>
+                <p>Arquitectura de soluciones IoT inteligentes. Asesor de integración BMS/HVAC, con enfoque en eficiencia energética y optimización de firmware.</p>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-line"></div>
+            <div class="timeline-dot" style="border-color: var(--text-dim); background: var(--border);"></div>
+            <div class="mono" style="color: var(--text-dim);">2023 - 2024</div>
+            <div>
+                <h3 style="font-size: 1.2rem;">Cofundador e Ingeniero Líder</h3>
+                <span class="mono" style="font-size: 0.8rem; color: var(--primary);">AUTÓMATA SRL</span>
+                <p style="margin-top: 5px;">Gestión integral de soluciones de automatización. Desde propuestas técnicas hasta la puesta en marcha final de paneles de control.</p>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-dot" style="border-color: var(--text-dim); background: var(--border);"></div>
+            <div class="mono" style="color: var(--text-dim);">2022 - 2024</div>
+            <div>
+                <h3 style="font-size: 1.2rem;">Especialista en Automatización Aeroportuaria</h3>
+                <span class="mono" style="font-size: 0.8rem; color: var(--primary);">ECASA</span>
+                <p style="margin-top: 5px;">Gestión de ciclos de vida CAPEX/OPEX para infraestructura crítica. Refactorización de lógica de control PBB (-30% de inactividad).</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-cta">
+        <div style="max-width: 600px; margin: 0 auto;">
+            <div style="font-family: 'JetBrains Mono'; color: var(--accent); margin-bottom: 20px; font-size: 0.8rem;">
+                public event EventHandler OnContact;
+            </div>
+            
+            <h2 style="font-family: 'JetBrains Mono'; font-weight: 700;">Diseñemos la Arquitectura de su Próximo Sistema.</h2>
+            <p style="color: var(--text-dim); margin-bottom: 30px;">
+                Disponible para consultoría en Ciudad de México y Remoto Globalmente. <br>
+                Especializado en cerrar la brecha IT/OT.
+            </p>
+            <div style="display: flex; gap: 20px; justify-content: center;">
+                <a href="mailto:lazaroautomation@gmail.com" class="btn-outline" style="background: var(--primary); color: var(--bg); border: none;">
+                    <i data-lucide="mail"></i> Email
+                </a>
+                <a href="https://linkedin.com/in/lazaroautomation" class="btn-outline">
+                    <i data-lucide="linkedin"></i> LinkedIn
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="mono" style="font-size: 0.8rem; color: var(--text-dim);">
+            © 2026 Lázaro M. Fuentes | Arquitecto de Sistemas
+        </div>
+        <div class="footer-links">
+            <a href="https://linkedin.com/in/lazaroautomation"><i data-lucide="linkedin" size="16"></i> LinkedIn</a>
+            <a href="#"><i data-lucide="github" size="16"></i> GitHub</a>
+            <a href="mailto:lazaroautomation@gmail.com"><i data-lucide="mail" size="16"></i> Email</a>
+        </div>
+        <div class="mono" style="font-size: 0.7rem; color: var(--comment);">
+            ULTIMA_ACTUALIZACION: <span id="date-now"></span>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        document.getElementById('date-now').textContent = new Date().toISOString().split('T')[0];
+
+        const textElement = document.getElementById('typewriter');
+        const phrases = [
+            "Iniciando Sistema...",
+            "Verificando Conexión PLC... [OK]",
+            "Cargando Módulos...",
+            "Estado: EN LÍNEA"
+        ];
+        let phraseIndex = 0;
+        let charIndex = 0;
+
+        function type() {
+            if (charIndex < phrases[phraseIndex].length) {
+                textElement.textContent += phrases[phraseIndex].charAt(charIndex);
+                charIndex++;
+                setTimeout(type, 50);
+            } else {
+                let pauseDuration = (phraseIndex === phrases.length - 1) ? 5000 : 1500;
+                setTimeout(erase, pauseDuration);
+            }
+        }
+
+        function erase() {
+            if (charIndex > 0) {
+                textElement.textContent = phrases[phraseIndex].substring(0, charIndex - 1);
+                charIndex--;
+                setTimeout(erase, 30);
+            } else {
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                setTimeout(type, 500);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', type);
+    </script>
 </body>
 </html>
