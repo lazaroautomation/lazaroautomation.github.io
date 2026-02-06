@@ -17,7 +17,7 @@
             --warning: #d29922; 
             --text-main: #e6edf3;
             --text-dim: #8b949e;
-            --text-bright: #d0d7de; /* UPGRADE 2: Lighter text for cards */
+            --text-bright: #d0d7de;
             --comment: #8b949e;
             --border: #30363d;
             --grid-line: rgba(48, 54, 61, 0.15);
@@ -37,6 +37,7 @@
             background-size: 100% 100%, 50px 50px, 50px 50px;
             background-attachment: fixed;
             overflow-x: hidden;
+            display: flex; flex-direction: column; min-height: 100vh;
         }
 
         /* --- TYPOGRAPHY --- */
@@ -75,13 +76,12 @@
         }
         .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(88, 166, 255, 0.3); background: #79c0ff; }
 
-        /* UPGRADE 4: Mobile Text Toggle */
         .mobile-text { display: none; }
         .desktop-text { display: inline; }
 
         /* --- HERO --- */
         .hero { 
-            min-height: 90vh; padding: 120px 10% 40px; 
+            padding: 140px 10% 40px; 
             display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 60px; align-items: center;
         }
 
@@ -131,6 +131,18 @@
         .n3 { transform: translate(0, 175px); }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
+        /* --- FINISHING TOUCH 1: STATIC TECH RIBBON --- */
+        .tech-ribbon {
+            display: flex; justify-content: center; flex-wrap: wrap; gap: 30px;
+            padding: 30px 10%; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+            background: rgba(1, 4, 9, 0.5); margin-bottom: 60px;
+        }
+        .tech-tag {
+            font-family: 'JetBrains Mono'; font-size: 0.85rem; color: var(--text-dim);
+            display: flex; align-items: center; gap: 8px; font-weight: 600; opacity: 0.8;
+        }
+        .tech-tag:hover { color: var(--primary); opacity: 1; transition: 0.2s; }
+
         /* --- SECTIONS --- */
         section { padding: 40px 10% 100px; }
         .section-header { 
@@ -152,7 +164,6 @@
             padding: 30px; display: flex; flex-direction: column; 
             transition: 0.3s ease; position: relative; overflow: hidden; height: 100%;
         }
-        /* UPGRADE 2: High Contrast Text */
         .project-card p { color: var(--text-bright); }
 
         .project-card:hover { 
@@ -161,19 +172,24 @@
         }
         .card-spacer { flex-grow: 1; min-height: 20px; }
 
+        /* --- FINISHING TOUCH 2: BREADCRUMBS --- */
+        .card-breadcrumb {
+            font-family: 'JetBrains Mono'; font-size: 0.7rem; color: var(--primary);
+            margin-bottom: 15px; display: block; opacity: 0.8; letter-spacing: 0.5px;
+        }
+
         /* --- CSS DIAGRAMS --- */
         .diagram-box {
             width: 100%; height: 180px; background: #050d18; border-radius: 8px;
             margin-bottom: 25px; position: relative; overflow: hidden;
             border: 1px dashed var(--border); transition: 0.3s;
         }
-        /* UPGRADE 3: Diagram Hover Glow */
         .project-card:hover .diagram-box { 
             border-color: var(--primary); 
             box-shadow: inset 0 0 20px rgba(88, 166, 255, 0.05);
         }
 
-        /* Ladder Logic */
+        /* Diagram Styles */
         .style-ladder .rung { width: 100%; height: 2px; top: 30%; left: 0; position: absolute; background: #30363d; }
         .style-ladder .rung::after { content: ''; position: absolute; top: 50px; width: 100%; height: 2px; background: #30363d; }
         .style-ladder .contact { width: 10px; height: 20px; border-left: 2px solid var(--primary); border-right: 2px solid var(--primary); position: absolute; top: 20px; left: 20%; }
@@ -181,10 +197,8 @@
             width: 20px; height: 20px; border: 2px solid var(--accent); border-radius: 50%; 
             position: absolute; top: 20px; right: 20%; transition: 0.3s;
         }
-        /* Hover Effect: Active Coil */
         .project-card:hover .style-ladder .coil { background: var(--accent); box-shadow: 0 0 15px var(--accent); }
         
-        /* Topology */
         .style-topo .node { 
             width: 40px; height: 40px; border: 2px solid var(--text-dim); border-radius: 4px; 
             position: absolute; display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--text-dim);
@@ -193,10 +207,7 @@
         .style-topo .node.center { top: 50%; left: 50%; transform: translate(-50%, -50%); border-color: var(--primary); color: var(--primary); }
         .style-topo .node.p1 { top: 20%; left: 20%; }
         .style-topo .node.p2 { bottom: 20%; right: 20%; }
-        /* Hover Effect: Active Nodes */
         .project-card:hover .style-topo .node { border-color: var(--primary); color: var(--primary); box-shadow: 0 0 10px rgba(88,166,255,0.2); }
-        
-        /* Icon Glow */
         .project-card:hover .diagram-box i { filter: drop-shadow(0 0 8px rgba(255,255,255,0.3)); transition: 0.3s; }
 
         /* --- METRICS & DATE BADGES --- */
@@ -221,6 +232,15 @@
             border-radius: 50%; position: absolute; left: 160px; top: 6px; z-index: 2;
         }
 
+        /* --- FINISHING TOUCH 3: FOOTER --- */
+        footer {
+            margin-top: auto; border-top: 1px solid var(--border);
+            padding: 40px 10%; background: #010409;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .footer-links a { color: var(--text-dim); margin-left: 20px; text-decoration: none; font-size: 0.9rem; transition: 0.2s; }
+        .footer-links a:hover { color: var(--primary); }
+
         @media (max-width: 900px) {
             .hero { grid-template-columns: 1fr; text-align: left; padding-top: 100px; }
             .hero-visual { height: 200px; margin-bottom: 40px; }
@@ -228,10 +248,10 @@
             .card-wide { grid-column: span 1; }
             .timeline-item { grid-template-columns: 1fr; gap: 10px; }
             .timeline-line, .timeline-dot { display: none; }
-            
-            /* UPGRADE 4: Mobile Text Toggle */
             .desktop-text { display: none; }
             .mobile-text { display: inline; }
+            footer { flex-direction: column; gap: 20px; text-align: center; }
+            .footer-links a { margin: 0 10px; }
         }
     </style>
 </head>
@@ -296,6 +316,16 @@
         </div>
     </header>
 
+    <div class="tech-ribbon">
+        <div class="tech-tag"><i data-lucide="cpu" size="16"></i> SIEMENS TIA PORTAL</div>
+        <div class="tech-tag"><i data-lucide="code" size="16"></i> C# / .NET</div>
+        <div class="tech-tag"><i data-lucide="network" size="16"></i> MQTT / UNS</div>
+        <div class="tech-tag"><i data-lucide="database" size="16"></i> INFLUXDB</div>
+        <div class="tech-tag"><i data-lucide="activity" size="16"></i> GRAFANA</div>
+        <div class="tech-tag"><i data-lucide="shield-check" size="16"></i> IEC 61508</div>
+        <div class="tech-tag"><i data-lucide="container" size="16"></i> DOCKER</div>
+    </div>
+
     <section id="projects">
         <div class="section-header">
             <div>
@@ -307,6 +337,7 @@
         <div class="bento-grid">
             
             <div class="project-card card-wide">
+                <span class="card-breadcrumb">L0: FIELD HARDWARE > L1: PLC LOGIC</span>
                 <div class="date-tag">2021 - 2024</div>
                 <div class="diagram-box style-ladder">
                     <div class="rung" style="top:30%"></div>
@@ -330,6 +361,7 @@
             </div>
 
             <div class="project-card">
+                <span class="card-breadcrumb">L1: PLC > L2: SCADA</span>
                 <div class="date-tag">2022 - 2024</div>
                 <div class="diagram-box style-topo">
                     <div class="node center"><i data-lucide="server" size="16"></i></div>
@@ -346,6 +378,7 @@
             </div>
 
             <div class="project-card">
+                <span class="card-breadcrumb">L0: FIELD > L1: SAFETY LOGIC</span>
                 <div class="date-tag">2022 - 2024</div>
                 <div class="diagram-box" style="display:flex; align-items:center; justify-content:center;">
                     <i data-lucide="shield-check" size="40" color="#d29922"></i>
@@ -360,6 +393,7 @@
             </div>
 
             <div class="project-card">
+                <span class="card-breadcrumb">L0: SENSORS > L1: CONTROL</span>
                 <div class="date-tag">2025 - 2026</div>
                 <div class="diagram-box" style="display:flex; align-items:center; justify-content:center; background: radial-gradient(circle, #161b22 10%, #050d18 90%);">
                     <i data-lucide="droplets" size="40" color="#58a6ff"></i>
@@ -373,6 +407,7 @@
             </div>
 
             <div class="project-card">
+                <span class="card-breadcrumb">L1: AUTOMATION > L3: CLOUD</span>
                 <div class="date-tag">2026 - ...</div>
                 <div class="diagram-box style-topo">
                     <div class="node center" style="border-color: var(--accent); color: var(--accent);">BMS</div>
@@ -388,6 +423,7 @@
             </div>
 
             <div class="project-card card-wide">
+                <span class="card-breadcrumb">L2: SCADA > L3: ENTERPRISE</span>
                 <div class="date-tag">R&D LAB</div>
                 <div class="diagram-box" style="display:flex; align-items:center; justify-content:center;">
                     <i data-lucide="workflow" size="40" color="#8b949e"></i>
@@ -401,6 +437,7 @@
             </div>
 
             <div class="project-card">
+                <span class="card-breadcrumb">L0: ESP32 > L3: GRAFANA</span>
                 <a href="#" class="repo-link"><i data-lucide="github" size="20"></i></a>
                 <div class="diagram-box style-topo">
                     <div class="node center" style="border-color: var(--accent); color: var(--accent);">MQTT</div>
@@ -416,6 +453,7 @@
             </div>
 
             <div class="project-card card-wide">
+                <span class="card-breadcrumb">L2: DRIVER > L3: APPLICATION</span>
                 <a href="#" class="repo-link"><i data-lucide="github" size="20"></i></a>
                  <div class="diagram-box" style="display:flex; align-items:center; justify-content:center;">
                     <span class="mono" style="color: var(--primary); font-weight:700;">.NET 10</span>
@@ -471,8 +509,47 @@
         </div>
     </section>
 
+    <section id="contact" class="contact-cta">
+        <div style="max-width: 600px; margin: 0 auto;">
+            <div style="font-family: 'JetBrains Mono'; color: var(--accent); margin-bottom: 20px; font-size: 0.8rem;">
+                public event EventHandler OnContact;
+            </div>
+            
+            <h2 style="font-family: 'JetBrains Mono'; font-weight: 700;">Let's Architect Your Next System.</h2>
+            <p style="color: var(--text-dim); margin-bottom: 30px;">
+                Available for consulting in Mexico City & Remote Globally. <br>
+                Specializing in bridging the IT/OT gap.
+            </p>
+            <div style="display: flex; gap: 20px; justify-content: center;">
+                <a href="mailto:lazaroautomation@gmail.com" class="btn-outline" style="background: var(--primary); color: var(--bg); border: none;">
+                    <i data-lucide="mail"></i> Email Me
+                </a>
+                <a href="https://linkedin.com/in/lazaroautomation" class="btn-outline">
+                    <i data-lucide="linkedin"></i> LinkedIn
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="mono" style="font-size: 0.8rem; color: var(--text-dim);">
+            © 2026 Lázaro M. Fuentes | Systems Architect
+        </div>
+        <div class="footer-links">
+            <a href="https://linkedin.com/in/lazaroautomation"><i data-lucide="linkedin" size="16"></i> LinkedIn</a>
+            <a href="#"><i data-lucide="github" size="16"></i> GitHub</a>
+            <a href="mailto:lazaroautomation@gmail.com"><i data-lucide="mail" size="16"></i> Email</a>
+        </div>
+        <div class="mono" style="font-size: 0.7rem; color: var(--comment);">
+            SYSTEM_LAST_UPDATED: <span id="date-now"></span>
+        </div>
+    </footer>
+
     <script>
         lucide.createIcons();
+
+        // Footer Timestamp
+        document.getElementById('date-now').textContent = new Date().toISOString().split('T')[0];
 
         const textElement = document.getElementById('typewriter');
         const phrases = [
