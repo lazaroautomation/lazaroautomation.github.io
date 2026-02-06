@@ -17,9 +17,10 @@
             --warning: #d29922; 
             --text-main: #e6edf3;
             --text-dim: #8b949e;
+            --text-bright: #d0d7de; /* UPGRADE 2: Lighter text for cards */
             --comment: #8b949e;
             --border: #30363d;
-            --grid-line: rgba(48, 54, 61, 0.4);
+            --grid-line: rgba(48, 54, 61, 0.15);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
@@ -30,7 +31,7 @@
             font-family: 'Inter', sans-serif;
             font-size: 16px;
             background-image: 
-                radial-gradient(circle at 50% 50%, transparent 20%, var(--bg) 90%),
+                radial-gradient(circle at 50% 50%, transparent 10%, var(--bg) 90%),
                 linear-gradient(var(--grid-line) 1px, transparent 1px),
                 linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
             background-size: 100% 100%, 50px 50px, 50px 50px;
@@ -54,10 +55,7 @@
             position: fixed; top: 0; width: 100%; z-index: 1001;
             display: flex; justify-content: space-between; align-items: center;
         }
-        .blinking-cursor::after {
-            content: '_';
-            animation: blink 1s step-end infinite;
-        }
+        .blinking-cursor::after { content: '_'; animation: blink 1s step-end infinite; }
         @keyframes blink { 50% { opacity: 0; } }
 
         /* --- NAV --- */
@@ -77,9 +75,13 @@
         }
         .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(88, 166, 255, 0.3); background: #79c0ff; }
 
+        /* UPGRADE 4: Mobile Text Toggle */
+        .mobile-text { display: none; }
+        .desktop-text { display: inline; }
+
         /* --- HERO --- */
         .hero { 
-            min-height: 95vh; padding: 120px 10% 0; 
+            min-height: 90vh; padding: 120px 10% 40px; 
             display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 60px; align-items: center;
         }
 
@@ -130,7 +132,7 @@
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
         /* --- SECTIONS --- */
-        section { padding: 100px 10%; }
+        section { padding: 40px 10% 100px; }
         .section-header { 
             margin-bottom: 50px; border-bottom: 1px solid var(--border); 
             padding-bottom: 20px; display: flex; justify-content: space-between; align-items: end;
@@ -150,36 +152,55 @@
             padding: 30px; display: flex; flex-direction: column; 
             transition: 0.3s ease; position: relative; overflow: hidden; height: 100%;
         }
+        /* UPGRADE 2: High Contrast Text */
+        .project-card p { color: var(--text-bright); }
+
         .project-card:hover { 
             border-color: var(--primary); transform: translateY(-5px); 
             box-shadow: 0 10px 40px rgba(0,0,0,0.3); 
         }
-        .card-spacer { flex-grow: 1; }
+        .card-spacer { flex-grow: 1; min-height: 20px; }
 
         /* --- CSS DIAGRAMS --- */
         .diagram-box {
             width: 100%; height: 180px; background: #050d18; border-radius: 8px;
             margin-bottom: 25px; position: relative; overflow: hidden;
-            border: 1px dashed var(--border);
+            border: 1px dashed var(--border); transition: 0.3s;
         }
-        
+        /* UPGRADE 3: Diagram Hover Glow */
+        .project-card:hover .diagram-box { 
+            border-color: var(--primary); 
+            box-shadow: inset 0 0 20px rgba(88, 166, 255, 0.05);
+        }
+
         /* Ladder Logic */
         .style-ladder .rung { width: 100%; height: 2px; top: 30%; left: 0; position: absolute; background: #30363d; }
         .style-ladder .rung::after { content: ''; position: absolute; top: 50px; width: 100%; height: 2px; background: #30363d; }
         .style-ladder .contact { width: 10px; height: 20px; border-left: 2px solid var(--primary); border-right: 2px solid var(--primary); position: absolute; top: 20px; left: 20%; }
-        .style-ladder .coil { width: 20px; height: 20px; border: 2px solid var(--accent); border-radius: 50%; position: absolute; top: 20px; right: 20%; }
+        .style-ladder .coil { 
+            width: 20px; height: 20px; border: 2px solid var(--accent); border-radius: 50%; 
+            position: absolute; top: 20px; right: 20%; transition: 0.3s;
+        }
+        /* Hover Effect: Active Coil */
+        .project-card:hover .style-ladder .coil { background: var(--accent); box-shadow: 0 0 15px var(--accent); }
         
         /* Topology */
         .style-topo .node { 
             width: 40px; height: 40px; border: 2px solid var(--text-dim); border-radius: 4px; 
             position: absolute; display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--text-dim);
+            transition: 0.3s;
         }
         .style-topo .node.center { top: 50%; left: 50%; transform: translate(-50%, -50%); border-color: var(--primary); color: var(--primary); }
         .style-topo .node.p1 { top: 20%; left: 20%; }
         .style-topo .node.p2 { bottom: 20%; right: 20%; }
+        /* Hover Effect: Active Nodes */
+        .project-card:hover .style-topo .node { border-color: var(--primary); color: var(--primary); box-shadow: 0 0 10px rgba(88,166,255,0.2); }
         
+        /* Icon Glow */
+        .project-card:hover .diagram-box i { filter: drop-shadow(0 0 8px rgba(255,255,255,0.3)); transition: 0.3s; }
+
         /* --- METRICS & DATE BADGES --- */
-        .metric { font-family: 'JetBrains Mono'; color: var(--accent); font-size: 0.8rem; font-weight: 700; margin-top: 20px; display: inline-block; background: rgba(126, 231, 135, 0.05); padding: 5px 10px; border-radius: 4px; }
+        .metric { font-family: 'JetBrains Mono'; color: var(--accent); font-size: 0.8rem; font-weight: 700; margin-top: 0; display: inline-block; background: rgba(126, 231, 135, 0.05); padding: 5px 10px; border-radius: 4px; }
         .date-tag {
             position: absolute; top: 20px; right: 20px; 
             font-family: 'JetBrains Mono'; font-size: 0.75rem; 
@@ -207,7 +228,10 @@
             .card-wide { grid-column: span 1; }
             .timeline-item { grid-template-columns: 1fr; gap: 10px; }
             .timeline-line, .timeline-dot { display: none; }
-            .nav-cta span { display: none; }
+            
+            /* UPGRADE 4: Mobile Text Toggle */
+            .desktop-text { display: none; }
+            .mobile-text { display: inline; }
         }
     </style>
 </head>
@@ -226,7 +250,9 @@
             <a href="#projects" style="color: var(--text-dim); text-decoration: none; font-weight: 500;">Work</a>
             <a href="#experience" style="color: var(--text-dim); text-decoration: none; font-weight: 500;">History</a>
             <a href="#" onclick="alert('Link this to your Calendly URL')" class="nav-cta">
-                <i data-lucide="calendar-check-2" size="18"></i> <span>Schedule System Audit</span>
+                <i data-lucide="calendar-check-2" size="18"></i> 
+                <span class="desktop-text">Schedule System Audit</span>
+                <span class="mobile-text">Book Audit</span>
             </a>
         </div>
     </nav>
@@ -241,17 +267,17 @@
             
             <div class="csharp-comment">
                 /* <br>
-                &nbsp;* Automation Engineer & Systems Architect bridging the physical and digital layers (Levels 0–3).<br>
-                &nbsp;* With 4+ years in high-stakes environments like international airports,<br>
+                &nbsp;* Automation Engineer & Systems Architect bridging the physical and digital layers <b style="color: #fff">(Levels 0–3)</b>.<br>
+                &nbsp;* With <b style="color: #fff">4+ years</b> in high-stakes environments like international airports,<br>
                 &nbsp;* I have evolved from hands-on technical execution to architectural design.<br>
                 &nbsp;*<br>
                 &nbsp;* <b style="color: #fff">FOCUS:</b><br>
                 &nbsp;* Refactoring legacy infrastructure and designing intelligent systems<br>
-                &nbsp;* using PLC logic, C#/.NET, and IoT solutions.<br>
+                &nbsp;* using <b style="color: #fff">PLC logic, C#/.NET, and IoT solutions.</b><br>
                 &nbsp;*<br>
                 &nbsp;* <b style="color: #fff">STRATEGY:</b><br>
                 &nbsp;* Balancing field reliability with high-level software development,<br>
-                &nbsp;* managing the full technical-economic lifecycle (CAPEX/OPEX).<br>
+                &nbsp;* managing the full technical-economic lifecycle <b style="color: #fff">(CAPEX/OPEX)</b>.<br>
                 &nbsp;*/
             </div>
         </div>
@@ -265,7 +291,7 @@
                 <div class="node-dot n2"></div>
             </div>
             <div class="arch-hub">
-                <i data-lucide="network" size="36" color="#58a6ff"></i>
+                <i data-lucide="layers" size="36" color="#58a6ff"></i>
             </div>
         </div>
     </header>
@@ -359,6 +385,47 @@
                 </p>
                 <div class="card-spacer"></div>
                 <span class="metric" style="color: var(--accent); border: 1px solid var(--accent); background: transparent;">CURRENT FOCUS</span>
+            </div>
+
+            <div class="project-card card-wide">
+                <div class="date-tag">R&D LAB</div>
+                <div class="diagram-box" style="display:flex; align-items:center; justify-content:center;">
+                    <i data-lucide="workflow" size="40" color="#8b949e"></i>
+                </div>
+                <h3 style="color: var(--text-dim);">Event-Driven UNS</h3>
+                <p style="font-size: 0.95rem; margin-top: 10px;">
+                    Creating a Unified Namespace (UNS) architecture prototype based on MQTT and Event-Driven principles to decouple hardware from apps.
+                </p>
+                <div class="card-spacer"></div>
+                <span class="metric" style="color: var(--text-dim); border: 1px solid var(--border); background: transparent;">UNIFIED NAMESPACE</span>
+            </div>
+
+            <div class="project-card">
+                <a href="#" class="repo-link"><i data-lucide="github" size="20"></i></a>
+                <div class="diagram-box style-topo">
+                    <div class="node center" style="border-color: var(--accent); color: var(--accent);">MQTT</div>
+                    <div class="node p1">ESP32</div>
+                    <div class="node p2">DB</div>
+                </div>
+                <h3 style="color: var(--text-dim);">IT/OT FOSS Pipeline</h3>
+                <p style="font-size: 0.95rem; margin-top: 10px;">
+                    ESP32 -> Node-RED -> InfluxDB -> Grafana.
+                </p>
+                <div class="card-spacer"></div>
+                <span class="metric" style="color: var(--text-dim); border: 1px solid var(--border); background: transparent;">OPEN SOURCE STACK</span>
+            </div>
+
+            <div class="project-card card-wide">
+                <a href="#" class="repo-link"><i data-lucide="github" size="20"></i></a>
+                 <div class="diagram-box" style="display:flex; align-items:center; justify-content:center;">
+                    <span class="mono" style="color: var(--primary); font-weight:700;">.NET 10</span>
+                </div>
+                <h3 style="color: var(--text-dim);">Industrial .NET Libs</h3>
+                <p style="font-size: 0.95rem; margin-top: 10px;">
+                    Refactoring industrial comms libraries (Modbus TCP) into .NET 10 using <b>Async & Events</b> for high-performance drivers.
+                </p>
+                <div class="card-spacer"></div>
+                <span class="metric" style="color: var(--text-dim); border: 1px solid var(--border); background: transparent;">ASYNC ARCHITECTURE</span>
             </div>
 
         </div>
