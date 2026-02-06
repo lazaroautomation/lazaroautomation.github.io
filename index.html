@@ -76,6 +76,15 @@
         }
         .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(88, 166, 255, 0.3); background: #79c0ff; }
 
+        /* LANGUAGE TOGGLE */
+        .lang-toggle {
+            font-family: 'JetBrains Mono'; font-size: 0.85rem; font-weight: 700;
+            color: var(--text-dim); text-decoration: none; border: 1px solid var(--border);
+            padding: 6px 10px; border-radius: 4px; transition: 0.2s;
+        }
+        .lang-toggle:hover { color: var(--text-main); border-color: var(--primary); }
+        .lang-active { color: var(--primary); border-color: var(--primary); background: rgba(88, 166, 255, 0.1); }
+
         .mobile-text { display: none; }
         .desktop-text { display: inline; }
 
@@ -116,14 +125,19 @@
         .ring-2 { width: 250px; height: 250px; opacity: 0.5; animation-duration: 25s; animation-direction: reverse; }
 
         .arch-hub {
-            width: 140px; height: 140px; background: var(--surface);
+            width: 80px; height: 80px; background: var(--surface);
             border: 2px solid var(--primary); border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 0 40px rgba(88, 166, 255, 0.2); z-index: 10;
-            overflow: hidden;
         }
-        .arch-hub img { width: 100%; height: 100%; object-fit: cover; }
-
+        .node-dot {
+            width: 12px; height: 12px; background: var(--surface);
+            border: 2px solid var(--text-dim); border-radius: 50%;
+            position: absolute; top: 50%; left: 50%;
+        }
+        .n1 { transform: translate(125px, 0); } 
+        .n2 { transform: translate(-125px, 0); } 
+        .n3 { transform: translate(0, 175px); }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
         /* --- TECH RIBBON --- */
@@ -172,16 +186,37 @@
             margin-bottom: 15px; display: block; opacity: 0.8; letter-spacing: 0.5px;
         }
 
+        /* --- CSS DIAGRAMS --- */
         .diagram-box {
             width: 100%; height: 180px; background: #050d18; border-radius: 8px;
             margin-bottom: 25px; position: relative; overflow: hidden;
             border: 1px dashed var(--border); transition: 0.3s;
         }
-        .diagram-box img { 
-            width: 100%; height: 100%; object-fit: cover; 
-            opacity: 0.7; filter: saturate(0.5) contrast(1.2); transition: 0.3s;
+        .project-card:hover .diagram-box { 
+            border-color: var(--primary); 
+            box-shadow: inset 0 0 20px rgba(88, 166, 255, 0.05);
         }
-        .project-card:hover .diagram-box img { opacity: 1; filter: saturate(1) contrast(1); }
+
+        /* Diagram Styles */
+        .style-ladder .rung { width: 100%; height: 2px; top: 30%; left: 0; position: absolute; background: #30363d; }
+        .style-ladder .rung::after { content: ''; position: absolute; top: 50px; width: 100%; height: 2px; background: #30363d; }
+        .style-ladder .contact { width: 10px; height: 20px; border-left: 2px solid var(--primary); border-right: 2px solid var(--primary); position: absolute; top: 20px; left: 20%; }
+        .style-ladder .coil { 
+            width: 20px; height: 20px; border: 2px solid var(--accent); border-radius: 50%; 
+            position: absolute; top: 20px; right: 20%; transition: 0.3s;
+        }
+        .project-card:hover .style-ladder .coil { background: var(--accent); box-shadow: 0 0 15px var(--accent); }
+        
+        .style-topo .node { 
+            width: 40px; height: 40px; border: 2px solid var(--text-dim); border-radius: 4px; 
+            position: absolute; display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--text-dim);
+            transition: 0.3s;
+        }
+        .style-topo .node.center { top: 50%; left: 50%; transform: translate(-50%, -50%); border-color: var(--primary); color: var(--primary); }
+        .style-topo .node.p1 { top: 20%; left: 20%; }
+        .style-topo .node.p2 { bottom: 20%; right: 20%; }
+        .project-card:hover .style-topo .node { border-color: var(--primary); color: var(--primary); box-shadow: 0 0 10px rgba(88,166,255,0.2); }
+        .project-card:hover .diagram-box i { filter: drop-shadow(0 0 8px rgba(255,255,255,0.3)); transition: 0.3s; }
 
         /* --- METRICS & DATE BADGES --- */
         .metric { font-family: 'JetBrains Mono'; color: var(--accent); font-size: 0.8rem; font-weight: 700; margin-top: 0; display: inline-block; background: rgba(126, 231, 135, 0.05); padding: 5px 10px; border-radius: 4px; }
@@ -242,10 +277,16 @@
         <div style="display: flex; gap: 25px; align-items: center;">
             <a href="#projects" style="color: var(--text-dim); text-decoration: none; font-weight: 500;">Work</a>
             <a href="#experience" style="color: var(--text-dim); text-decoration: none; font-weight: 500;">History</a>
-            <a href="mailto:lazaroautomation@gmail.com" class="nav-cta">
-                <i data-lucide="mail" size="18"></i> 
-                <span class="desktop-text">Schedule Audit</span>
-                <span class="mobile-text">Email</span>
+            
+            <div style="display:flex; gap:5px;">
+                <a href="index.html" class="lang-toggle lang-active">EN</a>
+                <a href="index_es.html" class="lang-toggle">ES</a>
+            </div>
+
+            <a href="#" onclick="alert('Link this to your Calendly URL')" class="nav-cta">
+                <i data-lucide="calendar-check-2" size="18"></i> 
+                <span class="desktop-text">Schedule System Audit</span>
+                <span class="mobile-text">Book Audit</span>
             </a>
         </div>
     </nav>
@@ -263,25 +304,39 @@
                 &nbsp;* Automation Engineer & Systems Architect bridging the physical and digital layers <b style="color: #fff">(Levels 0–3)</b>.<br>
                 &nbsp;* With <b style="color: #fff">4+ years</b> in high-stakes environments like international airports,<br>
                 &nbsp;* I have evolved from hands-on technical execution to architectural design.<br>
-                */
+                &nbsp;*<br>
+                &nbsp;* <b style="color: #fff">FOCUS:</b><br>
+                &nbsp;* Refactoring legacy infrastructure and designing intelligent systems<br>
+                &nbsp;* using <b style="color: #fff">PLC logic, C#/.NET, and IoT solutions.</b><br>
+                &nbsp;*<br>
+                &nbsp;* <b style="color: #fff">STRATEGY:</b><br>
+                &nbsp;* Balancing field reliability with high-level software development,<br>
+                &nbsp;* managing the full technical-economic lifecycle <b style="color: #fff">(CAPEX/OPEX)</b>.<br>
+                &nbsp;*/
             </div>
         </div>
 
         <div class="hero-visual">
-            <div class="orbit-ring ring-1"></div>
-            <div class="orbit-ring ring-2"></div>
+            <div class="orbit-ring ring-1">
+                <div class="node-dot n3"></div>
+            </div>
+            <div class="orbit-ring ring-2">
+                <div class="node-dot n1"></div>
+                <div class="node-dot n2"></div>
+            </div>
             <div class="arch-hub">
-                <img src="profile.png" alt="Lázaro Fuentes">
+                <i data-lucide="layers" size="36" color="#58a6ff"></i>
             </div>
         </div>
     </header>
 
     <div class="tech-ribbon">
-        <div class="tech-tag"><i data-lucide="cpu" size="16"></i> SIEMENS & SCHNEIDER PLC</div>
+        <div class="tech-tag"><i data-lucide="cpu" size="16"></i> SIEMENS TIA PORTAL</div>
         <div class="tech-tag"><i data-lucide="code" size="16"></i> C# / .NET</div>
         <div class="tech-tag"><i data-lucide="network" size="16"></i> MQTT / UNS</div>
         <div class="tech-tag"><i data-lucide="database" size="16"></i> INFLUXDB</div>
         <div class="tech-tag"><i data-lucide="activity" size="16"></i> GRAFANA</div>
+        <div class="tech-tag"><i data-lucide="shield-check" size="16"></i> IEC 61508</div>
         <div class="tech-tag"><i data-lucide="container" size="16"></i> DOCKER</div>
     </div>
 
@@ -289,7 +344,7 @@
         <div class="section-header">
             <div>
                 <h2 class="section-title">Project Evolution</h2>
-                <span class="section-subtitle">[GET] /api/deployments</span>
+                <span class="section-subtitle">[GET] /api/deployments?sort=chronological</span>
             </div>
         </div>
 
@@ -298,27 +353,35 @@
             <div class="project-card card-wide">
                 <span class="card-breadcrumb">L0: FIELD HARDWARE > L1: PLC LOGIC</span>
                 <div class="date-tag">2021 - 2024</div>
-                <div class="diagram-box">
-                    <img src="BHS.png" alt="Baggage Handling Systems">
+                <div class="diagram-box style-ladder">
+                    <div class="rung" style="top:30%"></div>
+                    <div class="contact"></div>
+                    <div class="coil"></div>
+                    <div class="rung" style="top:60%"></div>
+                    <div style="position:absolute; bottom:10px; right:10px; font-size:10px; color:#58a6ff; font-family:monospace;">BHS_LOGIC_V1</div>
                 </div>
                 <div>
                     <h3 style="color: var(--primary);">Baggage Handling Systems</h3>
                     <p style="margin-top: 10px; font-size: 1rem;">
                         <b>AIJM Implementation (2021-22)</b> & <b>Multi-Airport Refactoring (2022-24)</b>. 
-                        Co-led the hardware/software refactoring for critical airport logistics.
+                        Co-led the complete hardware/software refactoring for critical airport logistics.
                     </p>
                 </div>
                 <div class="card-spacer"></div>
                 <div>
                     <span class="metric">+25% THROUGHPUT</span>
+                    <span class="metric" style="color: var(--primary); background: rgba(88,166,255,0.1); margin-left: 10px;">SIEMENS TIA PORTAL</span>
                 </div>
             </div>
 
             <div class="project-card">
                 <span class="card-breadcrumb">L1: PLC > L2: SCADA</span>
                 <div class="date-tag">2022 - 2024</div>
-                <div class="diagram-box">
-                    <img src="ALCMS.png" alt="ALCMS SCADA">
+                <div class="diagram-box style-topo">
+                    <div class="node center"><i data-lucide="server" size="16"></i></div>
+                    <div class="node p1"><i data-lucide="lightbulb" size="16"></i></div>
+                    <div class="node p2"><i data-lucide="lightbulb" size="16"></i></div>
+                    <div style="position:absolute; width:100%; height:1px; background:#30363d; top:50%; transform:rotate(45deg);"></div>
                 </div>
                 <h3>Airfield Lighting (ALCMS)</h3>
                 <p style="font-size: 0.95rem; margin-top: 10px;">
@@ -329,17 +392,18 @@
             </div>
 
             <div class="project-card">
-                <span class="card-breadcrumb">L0: FIELD > L1: SAFETY</span>
+                <span class="card-breadcrumb">L0: FIELD > L1: SAFETY LOGIC</span>
                 <div class="date-tag">2022 - 2024</div>
                 <div class="diagram-box" style="display:flex; align-items:center; justify-content:center;">
                     <i data-lucide="shield-check" size="40" color="#d29922"></i>
                 </div>
                 <h3>PBB & Oil Custody</h3>
                 <p style="font-size: 0.95rem; margin-top: 10px;">
-                    Logic refactoring for positioning/safety and fuel transfer systems (IEC 61508).
+                    <b>PBB:</b> Logic refactoring for positioning/safety.<br>
+                    <b>Fuel:</b> Upgrading transfer systems (IEC 61508).
                 </p>
                 <div class="card-spacer"></div>
-                <span class="metric" style="color: var(--warning);">-30% PBB DOWNTIME</span>
+                <span class="metric" style="color: var(--warning); background: rgba(210,153,34,0.1);">-30% PBB DOWNTIME</span>
             </div>
 
             <div class="project-card">
@@ -348,9 +412,9 @@
                 <div class="diagram-box" style="display:flex; align-items:center; justify-content:center; background: radial-gradient(circle, #161b22 10%, #050d18 90%);">
                     <i data-lucide="droplets" size="40" color="#58a6ff"></i>
                 </div>
-                <h3>Sanitation Pumping</h3>
+                <h3>Corporate Sanitation Pumping</h3>
                 <p style="font-size: 0.95rem; margin-top: 10px;">
-                    Fail-safe redundancy logic for pumping stations in corporate infrastructure.
+                    Fail-safe redundancy logic for black water pumping stations in corporate infrastructure.
                 </p>
                 <div class="card-spacer"></div>
                 <span class="metric">FAIL-SAFE LOGIC</span>
@@ -359,15 +423,17 @@
             <div class="project-card">
                 <span class="card-breadcrumb">L1: AUTOMATION > L3: CLOUD</span>
                 <div class="date-tag">2026 - ...</div>
-                <div class="diagram-box" style="display:flex; align-items:center; justify-content:center;">
-                    <i data-lucide="building-2" size="40" color="#7ee787"></i>
+                <div class="diagram-box style-topo">
+                    <div class="node center" style="border-color: var(--accent); color: var(--accent);">BMS</div>
+                    <div class="node p1">HVAC</div>
+                    <div class="node p2">IoT</div>
                 </div>
                 <h3 style="color: var(--accent);">Corporate BMS Architecture</h3>
                 <p style="font-size: 0.95rem; margin-top: 10px;">
-                    Designing scalable Building Management Systems architecture for next-gen facilities.
+                    Designing scalable Building Management Systems architecture for next-gen corporate facilities.
                 </p>
                 <div class="card-spacer"></div>
-                <span class="metric">CURRENT FOCUS</span>
+                <span class="metric" style="color: var(--accent); border: 1px solid var(--accent); background: transparent;">CURRENT FOCUS</span>
             </div>
 
             <div class="project-card card-wide">
@@ -376,39 +442,42 @@
                 <div class="diagram-box" style="display:flex; align-items:center; justify-content:center;">
                     <i data-lucide="workflow" size="40" color="#8b949e"></i>
                 </div>
-                <h3>Event-Driven UNS</h3>
+                <h3 style="color: var(--text-dim);">Event-Driven UNS</h3>
                 <p style="font-size: 0.95rem; margin-top: 10px;">
-                    Unified Namespace (UNS) prototype based on MQTT to decouple hardware from apps.
+                    Creating a Unified Namespace (UNS) architecture prototype based on MQTT and Event-Driven principles to decouple hardware from apps.
                 </p>
                 <div class="card-spacer"></div>
-                <span class="metric">UNIFIED NAMESPACE</span>
+                <span class="metric" style="color: var(--text-dim); border: 1px solid var(--border); background: transparent;">UNIFIED NAMESPACE</span>
             </div>
 
             <div class="project-card">
                 <span class="card-breadcrumb">L0: ESP32 > L3: GRAFANA</span>
-                <div class="date-tag">2025</div>
-                <div class="diagram-box">
-                    <img src="VendingMachineIoT.png" alt="IT/OT Pipeline">
+                <a href="#" class="repo-link"><i data-lucide="github" size="20"></i></a>
+                <div class="diagram-box style-topo">
+                    <div class="node center" style="border-color: var(--accent); color: var(--accent);">MQTT</div>
+                    <div class="node p1">ESP32</div>
+                    <div class="node p2">DB</div>
                 </div>
                 <h3 style="color: var(--text-dim);">IT/OT FOSS Pipeline</h3>
                 <p style="font-size: 0.95rem; margin-top: 10px;">
-                    ESP32 -> Node-RED -> InfluxDB -> Grafana stack implementation.
+                    ESP32 -> Node-RED -> InfluxDB -> Grafana.
                 </p>
                 <div class="card-spacer"></div>
-                <span class="metric">OPEN SOURCE STACK</span>
+                <span class="metric" style="color: var(--text-dim); border: 1px solid var(--border); background: transparent;">OPEN SOURCE STACK</span>
             </div>
 
             <div class="project-card card-wide">
                 <span class="card-breadcrumb">L2: DRIVER > L3: APPLICATION</span>
-                <div class="diagram-box" style="display:flex; align-items:center; justify-content:center;">
-                    <span class="mono" style="color: var(--primary); font-weight:700; font-size: 2rem;">.NET 10</span>
+                <a href="#" class="repo-link"><i data-lucide="github" size="20"></i></a>
+                 <div class="diagram-box" style="display:flex; align-items:center; justify-content:center;">
+                    <span class="mono" style="color: var(--primary); font-weight:700;">.NET 10</span>
                 </div>
-                <h3>Industrial .NET Libs</h3>
+                <h3 style="color: var(--text-dim);">Industrial .NET Libs</h3>
                 <p style="font-size: 0.95rem; margin-top: 10px;">
-                    Refactoring industrial comms libraries (Modbus TCP) into .NET 10 using Async & Events.
+                    Refactoring industrial comms libraries (Modbus TCP) into .NET 10 using <b>Async & Events</b> for high-performance drivers.
                 </p>
                 <div class="card-spacer"></div>
-                <span class="metric">ASYNC ARCHITECTURE</span>
+                <span class="metric" style="color: var(--text-dim); border: 1px solid var(--border); background: transparent;">ASYNC ARCHITECTURE</span>
             </div>
 
         </div>
@@ -428,28 +497,50 @@
             <div class="mono" style="color: var(--accent);">APR 2025 - NOW</div>
             <div>
                 <h3 style="font-size: 1.2rem;">Independent Consultant (Grupo SIA)</h3>
-                <p>Architecting intelligent IoT solutions and advisor for BMS/HVAC integration.</p>
+                <p>Architecting intelligent IoT solutions. Advisor for BMS/HVAC integration, focusing on energy efficiency and firmware optimization.</p>
             </div>
         </div>
 
         <div class="timeline-item">
             <div class="timeline-line"></div>
-            <div class="timeline-dot" style="border-color: var(--text-dim);"></div>
+            <div class="timeline-dot" style="border-color: var(--text-dim); background: var(--border);"></div>
             <div class="mono" style="color: var(--text-dim);">2023 - 2024</div>
             <div>
                 <h3 style="font-size: 1.2rem;">Co-Founder & Lead Engineer</h3>
                 <span class="mono" style="font-size: 0.8rem; color: var(--primary);">AUTÓMATA SRL</span>
-                <p style="margin-top: 5px;">Managed end-to-end delivery of automation solutions.</p>
+                <p style="margin-top: 5px;">Managed end-to-end delivery of automation solutions. From technical proposals to final commissioning of control panels.</p>
             </div>
         </div>
 
         <div class="timeline-item">
-            <div class="timeline-dot" style="border-color: var(--text-dim);"></div>
+            <div class="timeline-dot" style="border-color: var(--text-dim); background: var(--border);"></div>
             <div class="mono" style="color: var(--text-dim);">2022 - 2024</div>
             <div>
                 <h3 style="font-size: 1.2rem;">Airports Automation Specialist</h3>
                 <span class="mono" style="font-size: 0.8rem; color: var(--primary);">ECASA</span>
-                <p style="margin-top: 5px;">Managed CAPEX/OPEX lifecycles for critical infrastructure.</p>
+                <p style="margin-top: 5px;">Managed CAPEX/OPEX lifecycles for critical infrastructure. Refactored PBB control logic (-30% downtime).</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-cta">
+        <div style="max-width: 600px; margin: 0 auto;">
+            <div style="font-family: 'JetBrains Mono'; color: var(--accent); margin-bottom: 20px; font-size: 0.8rem;">
+                public event EventHandler OnContact;
+            </div>
+            
+            <h2 style="font-family: 'JetBrains Mono'; font-weight: 700;">Let's Architect Your Next System.</h2>
+            <p style="color: var(--text-dim); margin-bottom: 30px;">
+                Available for consulting in Mexico City & Remote Globally. <br>
+                Specializing in bridging the IT/OT gap.
+            </p>
+            <div style="display: flex; gap: 20px; justify-content: center;">
+                <a href="mailto:lazaroautomation@gmail.com" class="btn-outline" style="background: var(--primary); color: var(--bg); border: none;">
+                    <i data-lucide="mail"></i> Email Me
+                </a>
+                <a href="https://linkedin.com/in/lazaroautomation" class="btn-outline">
+                    <i data-lucide="linkedin"></i> LinkedIn
+                </a>
             </div>
         </div>
     </section>
@@ -459,40 +550,52 @@
             © 2026 Lázaro M. Fuentes | Systems Architect
         </div>
         <div class="footer-links">
-            <a href="https://linkedin.com/in/lazaroautomation">LinkedIn</a>
-            <a href="https://github.com/lazaroautomation">GitHub</a>
+            <a href="https://linkedin.com/in/lazaroautomation"><i data-lucide="linkedin" size="16"></i> LinkedIn</a>
+            <a href="#"><i data-lucide="github" size="16"></i> GitHub</a>
+            <a href="mailto:lazaroautomation@gmail.com"><i data-lucide="mail" size="16"></i> Email</a>
         </div>
         <div class="mono" style="font-size: 0.7rem; color: var(--comment);">
-            UPDATED: <span id="date-now"></span>
+            SYSTEM_LAST_UPDATED: <span id="date-now"></span>
         </div>
     </footer>
 
     <script>
         lucide.createIcons();
+
         document.getElementById('date-now').textContent = new Date().toISOString().split('T')[0];
 
         const textElement = document.getElementById('typewriter');
-        const phrases = ["Initializing System...", "PLC_Connection... [OK]", "Status: ONLINE"];
-        let pIdx = 0, cIdx = 0;
+        const phrases = [
+            "Initializing System...",
+            "Checking PLC_Connection... [OK]",
+            "Loading Portfolio Modules...",
+            "Status: ONLINE"
+        ];
+        let phraseIndex = 0;
+        let charIndex = 0;
 
         function type() {
-            if (cIdx < phrases[pIdx].length) {
-                textElement.textContent += phrases[pIdx].charAt(cIdx++);
+            if (charIndex < phrases[phraseIndex].length) {
+                textElement.textContent += phrases[phraseIndex].charAt(charIndex);
+                charIndex++;
                 setTimeout(type, 50);
             } else {
-                setTimeout(erase, 3000);
+                let pauseDuration = (phraseIndex === phrases.length - 1) ? 5000 : 1500;
+                setTimeout(erase, pauseDuration);
             }
         }
 
         function erase() {
-            if (cIdx > 0) {
-                textElement.textContent = phrases[pIdx].substring(0, --cIdx);
+            if (charIndex > 0) {
+                textElement.textContent = phrases[phraseIndex].substring(0, charIndex - 1);
+                charIndex--;
                 setTimeout(erase, 30);
             } else {
-                pIdx = (pIdx + 1) % phrases.length;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
                 setTimeout(type, 500);
             }
         }
+
         document.addEventListener('DOMContentLoaded', type);
     </script>
 </body>
